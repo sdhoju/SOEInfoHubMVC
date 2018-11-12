@@ -1,0 +1,245 @@
+#secmid{
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+    clear: left;
+    display: block;
+}
+.announcement-items.announcement-post{
+    font-size: 1.15em;
+    /* margin-left: 20px; */
+    float:left;
+    max-width:  90%;    
+    /* padding: 2em; */
+}
+.announcement{
+    font-size: 1.15em;
+    margin-left: auto;
+    float:left;
+    width: 72%;    
+    padding: 2em;
+}
+.announcement-items.announcement-post, .announcement p{
+    font-size: 1.15em;
+    color: #555;
+    text-shadow: 0 1px 0 #FFFFFF;
+    max-width: 90%;
+}
+.wp-caption.alignleft{
+    width: 360px;
+    height: 480px;
+    /* max-width: 30%; */
+}
+.announcement-post-text{
+    width: 70%;
+    max-width: 70%;
+}
+ b {
+    font-weight: bold;
+    padding-bottom: .5em;
+}
+
+.announcement-post-title{
+    font-size: 20px;
+    width: 100%;
+    text-align: left;
+    padding-bottom: .5em;
+    }
+    
+.announcement-items.announcement-box{
+    display: inline-block;
+
+    }
+
+.announcement-items .announcement-post-creater, .announcement-post-location{
+    font-size: 20px;;
+    text-align: left;
+    }
+    
+.announcement-post-text{
+    padding-top: 1em;
+    font-size: .95em;
+    text-align: justify;
+    line-height: 1.7em;
+    color: #555
+    }
+    
+.announcement-post-image-header {
+    width: 90%;
+    margin-left: 5%;
+    height: auto;
+
+}
+.announcement_post p{
+    color: #555;
+
+}
+.create-announcement-form{
+  width: 85%;  
+}
+#t01{
+    width: 60%;
+}
+#t01 input{
+    color: black;
+    font-size: larger;
+    height: 40px;
+    /* width: 75%; */
+    border-radius: 4px;
+    /* background-color: #c2e1ff; */
+}
+#t01 textarea{
+    height: 400px;
+    width: 100%;
+    border-radius: 4px;
+    color: black;
+}
+
+table, th , td {
+    color: white;
+    border-collapse: collapse;
+    padding-left: 50px;
+    /* padding-bottom: 5px; */
+    padding-top: 12px;
+    font-size: 1.15em;;
+    
+}
+
+.admin_dashboard{
+    background-color: #14213D;
+    /* border-radius: 10px; */
+}
+.admin_dashboard tr{
+padding-bottom: 5em;
+}
+.admin_dashboard tr:hover {background-color:rgb(32, 66, 139);}
+.admin-dashboard-head:hover {background-color:#14213D !important;  }
+
+.alert-box.info {
+    background-color: #a0d3e8;
+    border-color: #74bfdd;
+    color: #030303;
+    width: 60%;
+}
+.alert-box {
+    border-style: solid;
+    border-width: 1px;
+    display: block;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+    position: relative;
+    font-size: 2.25rem;
+    transition: opacity 300ms ease-out;
+    background-color: #65704e;
+    border-color: #0078a0;
+    color: #d8e5bc;
+}
+table {
+    background-color: #14213d;
+}
+.published-button{
+    background-color: green;
+    color: #030303;
+}
+.unpublished-button{
+    background-color:red;
+    color: #030303;
+}
+
+/* table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+} 
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}*/
+.form_submit_button{
+    width: 50%!important;
+    background-color: #d1363a !important;
+    border-radius: 25px !important;
+    color: floralwhite !important;
+
+    
+}
+.asterisk {
+    color: #d1363a!important;
+}
+
+.aside {
+    max-width: 768px;
+    width: 25%;
+    float: right;
+    height: auto;
+}
+.alignright {
+    display: inline;
+    float: right;
+}
+.alignleft{
+    display: inline;
+    float: left;
+}
+nav.sidebar.contactblock, nav.main-contact.contactblock {
+    background-color: #14213D;
+    padding: 20px;
+}
+nav.sidebar {
+    margin-bottom: 25px;
+}
+
+
+nav.otherlinks {
+    background-color: white;
+    border: 1px solid #D9D9D9;
+    line-height: 24px;
+    
+}
+nav.otherlinks li {
+    border-bottom: 1px solid #D9D9D9;
+  }
+
+  .sidebar h2 {
+    display: none;
+}
+nav.otherlinks li a {
+    color: #142161;
+    font-size: .9em;
+    font-weight: bold;
+    display:block;
+    padding: 15px 15px 12px 30px;
+  background: url("http://www.olemiss.edu/_images/icons-main/arrow-blue.png") no-repeat scroll 4px center transparent;
+  }
+
+  nav.otherlinks {
+    background-color: #E8EBF2;
+    display:block;
+  }
+
+nav.sidebar.contactblock ul li.assist a, nav.sidebar.contactblock ul li.assist-number a, nav.sidebar.contactblock ul li.fax a, nav.main-contact.contactblock ul li.fax a, nav.sidebar.contactblock ul li.fax-noline a {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 1.55em;
+    color: #9BA5C2;
+}
+nav.sidebar.contactblock ul li.assist, nav.sidebar.contactblock ul li.assist-number, nav li.fax, nav li.fax-noline {
+      color: #9BA5C2;
+      text-shadow: none;
+      text-transform: uppercase;
+      max-width: 100%;
+    }
+nav.sidebar.contactblock ul li.fax, nav.main-contact.contactblock ul li.fax {
+    background: url(http://www.olemiss.edu/_images/border/black-blue-hrz.png) repeat-x scroll center top transparent;
+    padding-top: 21px;
+}
+
+nav a {
+    text-decoration: none;
+}
+li.fb {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -320px transparent;}
+li.twit {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -300px transparent;}
+li.yt {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -403px transparent;}
+li.in {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -423px transparent;}
+li.ig {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -240px transparent;}
+li.gg {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -200px transparent;}
+li.pint {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repeat scroll 0 -220px transparent;}
+
+.mobile {display:none;}
