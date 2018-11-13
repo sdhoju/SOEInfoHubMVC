@@ -1,6 +1,12 @@
 
 <div  id="secmid">
 	<div  id="innercontent">
+	<?php 
+		if (($output = message()) !== null) {
+			echo $output;
+			$output=null;
+		}
+	?>
 		<div class='create-announcement-form'>
 			<form action='<?php echo URL; ?>announcement/addAnnouncement' method='post'>
                      <h3 style="font-size: 2em;">Please fill this form to submit an announcement</h3>

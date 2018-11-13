@@ -31,13 +31,10 @@ class Announcement extends Controller
 
     public function submitAnnouncement()
     {
+        
         $majors = $this->model->getAllMajor();
         $classifications = $this->model->getAllClassification();
         require APP . 'view/_templates/header.php';
-        if (($output = message()) !== null) {
-            echo $output;
-            $output=null;
-        }
         require APP . 'view/announcements/fill_Form.php';
         require APP . 'view/_templates/footer.php';
     }
@@ -46,17 +43,15 @@ class Announcement extends Controller
     public function addAnnouncement()
     {
         if (isset($_POST["submit_announcement"])) {
-            $errors = checkFile($_POST['attachments'])
-            
-
-
+            // $errors = checkFile($_POST['attachments']);
             $result= $this->model->addAnnouncement($_POST["contact_Name"], $_POST["email"],  $_POST["phone"],
                 $_POST["S_Organization"],
                 $_POST["announcement_Title"], $_POST["announcement_Text"], 
                     $_POST["announcement_Location"],$_POST["start_day"],
                     $_POST["end_day"],  $_POST["announcement_time"]);
+                    
         }
-        if ($result==1){
+        if ($result==(1+sizeof($_POST["contact_Name"])) ){
             $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
                                     School of Engineering with review the announcement. TODO: mail here";        }
         else{

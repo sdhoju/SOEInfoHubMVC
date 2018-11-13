@@ -23,7 +23,15 @@ INSERT into classification(cls_Name) VALUES
 
 
 
-
+START TRANSACTION;
+Insert into announcement 
+				(created_at,announcement_ID,announcement_Title,announcement_Text,
+				announcement_Location,start_day,end_day,announcement_time,published) 
+				values(1542062366,1542062366,'Thanksgiving Potluck at OXCM + Harvest Angel Project',
+				' aasdasd','Student Union','11-24-2018','','9:30 pm - 1:30 am',0);
+				INSERT INTO submitter(announcement_ID,contact_Name,email,phone,S_organization)
+				VALUES(1542062366,'asd','sdhoju@go.olemiss.edu','132-465-4657','');
+COMMIT;
 
 
 

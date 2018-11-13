@@ -2,7 +2,6 @@
 class Model
 {
     function __construct($db)
-    
     {
         try {
             $this->db = $db;
@@ -63,8 +62,7 @@ class Model
                             ':start_day' => $start_day,
                             ':end_day' => $end_day, 
                             ':announcement_time' => $announcement_time,
-                            ':published' => 0,
-                            ':announce_ID'=>$announcement_ID
+                            ':published' => 0
                                 );
        
 
@@ -73,26 +71,36 @@ class Model
                 values(:created_at,:announcement_ID,:announcement_Title,:announcement_Text,:announcement_Location,:start_day,:end_day,:announcement_time,:published);";
         
         $sql.= "INSERT INTO submitter(announcement_ID,contact_Name,email,phone,S_organization)VALUES";
-
         for($x = 0; $x < sizeof($contact_Name); $x++){
-            $sql.="(:announce_ID,:contact_Name$x,:email$x,:phone$x,:S_organization$x)";
+            $sql.="(:announce_ID$x,:contact_Name$x,:email$x,:phone$x,:S_organization$x),";
+            $parameters[":announce_ID$x"]=$announcement_ID;
             $parameters[":contact_Name$x"]=$contact_Name[$x];
             $parameters[":email$x"]=$email[$x];
             $parameters[":phone$x"]=$phone[$x];
             $parameters[":S_organization$x"]=$S_Organization[$x];
         }
+        $sql= rtrim($sql,',');
         $sql.=";";           
-        $sql.="COMMIT;";         
+
+        
+        $sql.="COMMIT;";       
+        
+        
        
         $query = $this->db->prepare($sql);
 
         // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  //exit();
-        return $query->execute($parameters);
-        // print_r($result);
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        $query->execute($parameters);
+        $reults=0;
+        do {
+            $reults+=$query->rowCount();
+        } while ($query->nextRowset());
+        return $reults;
     }
 
 
+   
 
     public function getAllMajor()
     {
