@@ -15,7 +15,7 @@ class Announcement extends Controller
         $link='	<br>
         <center>
             <h3>
-            <span><a href="'.URL.'announcement/submitAnnouncement">Fill Form</a></span>
+            <span><a href="'.URL.'announcement/Form">Fill Form</a></span>
             <span><a href="dashboard.php">List Announcemnts</a></span></h3>
         </center>';
 
@@ -29,7 +29,7 @@ class Announcement extends Controller
         require APP . 'view/_templates/footer.php';
     }
 
-    public function submitAnnouncement()
+    public function Form()
     {
         
         $majors = $this->model->getAllMajor();
@@ -40,24 +40,40 @@ class Announcement extends Controller
     }
 
 
-    public function addAnnouncement()
+    public function submitAnnouncement()
     {
         if (isset($_POST["submit_announcement"])) {
             // $errors = checkFile($_POST['attachments']);
-            $result= $this->model->addAnnouncement($_POST["contact_Name"], $_POST["email"],  $_POST["phone"],
-                $_POST["S_Organization"],
-                $_POST["announcement_Title"], $_POST["announcement_Text"], 
-                    $_POST["announcement_Location"],$_POST["start_day"],
-                    $_POST["end_day"],  $_POST["announcement_time"]);
+            $file_names = $_FILES['attachments']['name'];
+            $announcement_ID=time();
+
+            date_default_timezone_set('America/Chicago');
+            $created_at= new DateTime();
+            $created_at= $created_at->format('Y\-m\-d\ h:i:s');
+
+
+            $result= $this->model->addAnnouncement($created_at,$announcement_ID, $_POST["contact_Name"], $_POST["email"], 
+                        $_POST["phone"],$_POST["S_Organization"],
+                         $_POST["announcement_Title"], $_POST["announcement_Text"], 
+                        $_POST["announcement_Location"],$_POST["start_day"],
+                        $_POST["end_day"],  $_POST["announcement_time"],
+                        $_POST["major"], $_POST["classification"],$file_names);
                     
         }
-        if ($result==(1+sizeof($_POST["contact_Name"])) ){
+        if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) ){
+            for($i=0; $i<sizeof($file_names);$i++){
+                $img = $file_names[$i];
+                $time=time();
+                move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+            }
+
             $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
                                     School of Engineering with review the announcement. TODO: mail here";        }
+
         else{
             $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
         }
-        header('location: ' . URL.'announcement/submitAnnouncement' );
+        header('location: ' . URL.'announcement/Form' );
     }
 
     public function checkFile(){

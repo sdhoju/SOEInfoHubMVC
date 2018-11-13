@@ -77,6 +77,10 @@
 .create-announcement-form{
   width: 85%;  
 }
+
+.announce-info td{
+    width: 20%;
+}
 #t01{
     width: 60%;
 }
@@ -104,6 +108,13 @@ table, th , td {
     font-size: 1.15em;;
     
 }
+
+.announcement-attachment input{
+       color:white!important;
+   
+}
+
+
 
 .admin_dashboard{
     background-color: #14213D;
@@ -152,13 +163,24 @@ table {
 table tr:nth-child(even) {
     background-color: #ffffff;
 }*/
+.form-submission{
+text-align: center;
+padding-bottom: 2em;
+}
 .form_submit_button{
     width: 50%!important;
     background-color: #d1363a !important;
     border-radius: 25px !important;
     color: floralwhite !important;
 
-    
+}
+
+.add-new-contact, .add-new-attachment{
+    width: 150px!important;
+
+    background-color: #d1363a !important;
+    color: floralwhite !important;
+ 
 }
 .asterisk {
     color: #d1363a!important;

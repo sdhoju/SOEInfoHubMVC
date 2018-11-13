@@ -49,12 +49,14 @@ class Model
         return $query->fetch();
     }
   
-    public function addAnnouncement($contact_Name, $email,$phone=[],$S_Organization=[],
+    public function addAnnouncement($created_at,$announcement_ID,$contact_Name, $email,$phone=[],$S_Organization=[],
         $announcement_Title,$announcement_Text,$announcement_Location,$start_day,$end_day="",
-        $announcement_time)
+        $announcement_time,$majors,$classifications,$filenames)
     {
-        $announcement_ID=time();
-        $parameters = array(':created_at' => $announcement_ID, 
+        
+       
+        
+        $parameters = array(':created_at' => $created_at, 
                             ':announcement_ID' => $announcement_ID, 
                             ':announcement_Title' => $announcement_Title,
                             ':announcement_Text' => $announcement_Text, 
@@ -72,30 +74,57 @@ class Model
         
         $sql.= "INSERT INTO submitter(announcement_ID,contact_Name,email,phone,S_organization)VALUES";
         for($x = 0; $x < sizeof($contact_Name); $x++){
-            $sql.="(:announce_ID$x,:contact_Name$x,:email$x,:phone$x,:S_organization$x),";
-            $parameters[":announce_ID$x"]=$announcement_ID;
+            $sql.="(:submitterannounce_ID$x,:contact_Name$x,:email$x,:phone$x,:S_organization$x),";
+            $parameters[":submitterannounce_ID$x"]=$announcement_ID;
             $parameters[":contact_Name$x"]=$contact_Name[$x];
             $parameters[":email$x"]=$email[$x];
             $parameters[":phone$x"]=$phone[$x];
             $parameters[":S_organization$x"]=$S_Organization[$x];
         }
         $sql= rtrim($sql,',');
-        $sql.=";";           
-
+        $sql.=";";    
         
+        
+        $sql.= "INSERT INTO announceMajor(announcement_ID,major_ID)VALUES";
+        for($x = 0; $x < sizeof($majors); $x++){
+            $sql.="(:announceMajorannounce_ID$x,:majors$x),";
+            $parameters[":announceMajorannounce_ID$x"]=$announcement_ID;
+            $parameters[":majors$x"]=$majors[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";   
+
+        $sql.= "INSERT INTO announceCls(announcement_ID,cls_ID)VALUES";
+        for($x = 0; $x < sizeof($classifications); $x++){
+            $sql.="(:announceClsannounce_ID$x,:classifications$x),";
+            $parameters[":announceClsannounce_ID$x"]=$announcement_ID;
+            $parameters[":classifications$x"]=$classifications[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";  
+
+        $sql.= "INSERT INTO announcementFile(announcement_ID,file_name)VALUES";
+        for($x = 0; $x < sizeof($filenames); $x++){
+            $sql.="(:announcementFileannounce_ID$x,:filenames$x),";
+            $parameters[":announcementFileannounce_ID$x"]=$announcement_ID;
+            $parameters[":filenames$x"]=$filenames[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";  
         $sql.="COMMIT;";       
         
         
        
         $query = $this->db->prepare($sql);
-
+        // print_r($parameters);
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
         $query->execute($parameters);
         $reults=0;
         do {
-            $reults+=$query->rowCount();
+            $reults+= $query->rowCount();
         } while ($query->nextRowset());
+        
         return $reults;
     }
 

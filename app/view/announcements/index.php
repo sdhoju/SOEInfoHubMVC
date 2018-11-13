@@ -11,7 +11,9 @@
 					if (!$row->attachments){
 						$row->attachments='placeholder.jpg';
 					}
-						echo'<img class="announcement-post-image-header" src="'."uploads/".$row->attachments.'" alt="'.$row->announcement_Title.'">';
+						$images = explode(',', $row->attachments);
+
+						echo'<img class="announcement-post-image-header" src="'.URL."uploads/".$images[0].'" alt="'.$row->announcement_Title.'">';
 						echo'<div id="myModal" class="modal">
 								<span class="close">&times;</span>
 								<img class="modal-content" id="img01">

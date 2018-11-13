@@ -68,3 +68,26 @@ CREATE TABLE announcementFile(
     FOREIGN KEY (announcement_ID) REFERENCES announcement(announcement_ID)
 );
 
+
+INSERT into major(major_Name) VALUES
+			("Biochemistry"),
+			("Biomedical Engineering"),
+			("Chemical Engineering"),
+			("Civil Engineering"),
+			("Computer Science"),
+			("Electrical Engineering"),
+			("General Engineering"),
+			("Geological Engineering"),
+			("Geology"),
+			("Mechanical Engineering");
+
+
+INSERT into classification(cls_Name) VALUES
+			("Freshmen"),
+			("Sophpmore"),
+			("Junior"),
+			("Senior"),
+			("Graduate");
+
+
+
