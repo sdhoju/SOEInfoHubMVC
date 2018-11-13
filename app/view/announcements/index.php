@@ -10,7 +10,6 @@
 						}
 							$images = explode(',', $row->attachments);
 						echo'<img class="announcement-post-image-header" src="'.URL."uploads/".$images[0].'" alt="'.$row->announcement_Title.'">';
-
 						echo'<div id="myModal" class="modal">
 								<span class="close">&times;</span>
 								<img class="modal-content" id="img01">
@@ -24,9 +23,8 @@
 						echo "<a href = ".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">";
 							echo "<h3 class='announcement-post-title'>".$row->announcement_Title."</h3>";
 						echo'</a>';
-
 						echo'<b>Location:</b>'.$row->announcement_Location.'<br>';
-						echo '<b>Date and time:</b>'.$row->start_day." at ".$row->announcement_time.' </br></br>';
+						echo '<b>Date and time:</b> '.$row->start_day." ".$row->start_time." to ".$row->end_day." ".$row->end_time.' </br></br>';
 
 						echo'<b>CONTACT:</b><br>';
 						echo '<div class="contact" style="display:flex; padding-bottom:20px;">';

@@ -9,8 +9,9 @@ CREATE TABLE announcement(
 	announcement_Text TEXT,
 	announcement_Location VARCHAR(200),
 	start_day DATE,
+    start_time TIME,
     end_day DATE,
-	announcement_time VARCHAR(50),
+    end_time TIME,
 	published  TINYINT(1),
 	PRIMARY KEY(announcement_ID)
 );

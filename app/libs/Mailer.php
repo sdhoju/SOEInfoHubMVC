@@ -71,7 +71,7 @@ if(!class_exists('Mailer')){
             $this->mail->Subject = $subject;
             $this->mail->Body    = $html;
 
-            if(fals !== $plaintext){
+            if(false !== $plaintext){
                 $this->mail->AltBody = $plaintext;
             }
  

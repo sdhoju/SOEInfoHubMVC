@@ -15,7 +15,7 @@ class Model
      */
     public function getAllAnnouncements()
     {
-        $sql ="SELECT announcement.announcement_ID as announcement_ID, announcement_Title, announcement_Text, announcement_Location , start_day,end_day,announcement_time, 
+        $sql ="SELECT announcement.announcement_ID as announcement_ID, announcement_Title, announcement_Text, announcement_Location , start_day,start_time,end_day,end_time, 
                                 group_Concat(Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(phone) as phones,group_Concat(s_organization) as orgs,
                                 group_Concat(file_name) as attachments
                                 from (announcement natural join submitter)
@@ -39,7 +39,7 @@ class Model
     public function getAnnouncementByID($announcement_ID)
     {
         //published =1 AND
-        $sql = "SELECT * FROM announcement WHERE  announcement_ID = :announcement_ID  LIMIT 1 ";
+        $sql = "SELECT * FROM announcement natural join announcementFile WHERE  announcement_ID = :announcement_ID  LIMIT 1 ";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
@@ -50,8 +50,8 @@ class Model
     }
   
     public function addAnnouncement($created_at,$announcement_ID,$contact_Name, $email,$phone=[],$S_Organization=[],
-        $announcement_Title,$announcement_Text,$announcement_Location,$start_day,$end_day="",
-        $announcement_time,$majors,$classifications,$filenames)
+        $announcement_Title,$announcement_Text,$announcement_Location,$start_day,$start_time,$end_day,$end_time,
+        $majors,$classifications,$filenames)
     {
         
        
@@ -62,15 +62,16 @@ class Model
                             ':announcement_Text' => $announcement_Text, 
                             ':announcement_Location' => $announcement_Location, 
                             ':start_day' => $start_day,
+                            ':start_time' => $start_time,
                             ':end_day' => $end_day, 
-                            ':announcement_time' => $announcement_time,
+                            ':end_time' => $end_time, 
                             ':published' => 0
                                 );
        
 
        $sql="START TRANSACTION;";
-       $sql.= "Insert into announcement (created_at,announcement_ID,announcement_Title,announcement_Text,announcement_Location,start_day,end_day,announcement_time,published) 
-                values(:created_at,:announcement_ID,:announcement_Title,:announcement_Text,:announcement_Location,:start_day,:end_day,:announcement_time,:published);";
+       $sql.= "Insert into announcement (created_at,announcement_ID,announcement_Title,announcement_Text,announcement_Location,start_day,start_time,end_day,end_time,published) 
+                values(:created_at,:announcement_ID,:announcement_Title,:announcement_Text,:announcement_Location,:start_day,:start_time,:end_day,:end_time,:published);";
         
         $sql.= "INSERT INTO submitter(announcement_ID,contact_Name,email,phone,S_organization)VALUES";
         for($x = 0; $x < sizeof($contact_Name); $x++){

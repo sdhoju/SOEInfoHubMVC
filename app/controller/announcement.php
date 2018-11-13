@@ -63,8 +63,8 @@ class Announcement extends Controller
                  $_POST["contact_Name"], $_POST["email"], 
                         $_POST["phone"],$_POST["S_Organization"],
                          $_POST["announcement_Title"], $_POST["announcement_Text"], 
-                        $_POST["announcement_Location"],$_POST["start_day"],
-                        $_POST["end_day"],  $_POST["announcement_time"],
+                        $_POST["announcement_Location"],$_POST["start_day"],$_POST["start_time"],
+                        $_POST["end_day"],  $_POST["end_time"],
                         $_POST["major"], $_POST["classification"],$file_names);
                     
         }
@@ -143,7 +143,10 @@ class Announcement extends Controller
         $ContactMailer->mail($to,$subject,$html,$from,$replyto);
 
         //Send email to Admin
-        $toAdmin = array('email'=>'sdhoju@go.olemiss.edu');
+        $toAdmin=array();
+        $toAdmin[] = array(
+                'name'=>'School of Engineering',
+                'email'=>'sdhoju@go.olemiss.edu');
         $subject='SOEInfoHub Submission Received';
         $html="$names[0] has submitted an event on $announcement_Title.<br>
                 Please review this event. Thank You! ";
@@ -151,9 +154,33 @@ class Announcement extends Controller
         $replyto=array('name'=>$names[0],'email'=>$emails[0]);
        
         $adminMailer = new Mailer(true);
-        $adminMailer->mail($to,$subject,$html,$from,$replyto);
+        $adminMailer->mail($toAdmin,$subject,$html,$from,$replyto);
     }
 
+    public function EmailtoFriend($announcement_ID){
+        if (isset($_POST["email_to_friend"])) {
+            $email=$_POST['email'];
+            // str($email);
+            $announcement = $this->model->getAnnouncementByID($announcement_ID);
+            $to=array();
+            $to[]=array('email'=> "$email");
+
+            $subject=$announcement->announcement_Title;
+            $html='<h3>"'.$announcement->announcement_Title.'"</h3>
+                    <img id="myImg"  class="announcement-post-image-header" 
+                    src="'.ROOT.'uploads/'.$announcement->file_name.'">		
+            <p>'. $announcement->announcement_Text.'</p>';
+            
+            $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+    
+            $newMailer = new Mailer(true);
+            $newMailer->mail($to,$subject,$html,$from);
+
+        
+        }
+        header('location: ' .URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($announcement_ID, ENT_QUOTES, 'UTF-8') );
+
+    }
 
 
 
@@ -181,4 +208,51 @@ class Announcement extends Controller
             $this->model->deleteSong($song_id);
         }
     }
+
+
+    public function getISC($announcement_ID){
+        $announcement = $this->model->getAnnouncementByID($announcement_ID);
+
+            //This is the most important coding.
+            header("Content-Type: text/Calendar");
+            header("Content-Disposition: inline; filename=".htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8').".ics");
+            echo "BEGIN:VCALENDAR\n";
+            echo "PRODID:-//Microsoft Corporation//Outlook 12.0 MIMEDIR//EN\n";
+            echo "VERSION:2.0\n";
+            echo "METHOD:PUBLISH\n";
+            echo "X-MS-OLK-FORCEINSPECTOROPEN:TRUE\n";
+            echo "BEGIN:VEVENT\n";
+            echo "CLASS:PUBLIC\n";
+            echo "CREATED:$announcement->created_at\n";
+            echo "DESCRIPTION:".htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8')."\n.";
+            echo "DTEND:$announcement->end_day\n";
+            echo "DTSTAMP:20091109T093305Z\n";
+            echo "DTSTART:$announcement->start_day\n";
+            echo "LAST-MODIFIED:20091109T101015Z\n";
+            echo "LOCATION:$announcement->announcement_Location\n";
+            echo "PRIORITY:5\n";
+            echo "SEQUENCE:0\n";
+            echo "SUMMARY;LANGUAGE=en-us:".htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8')."\n";
+            echo "TRANSP:OPAQUE\n";
+            echo "UID:040000008200E00074C5B7101A82E008000000008062306C6261CA01000000000000000\n";
+            echo "X-MICROSOFT-CDO-BUSYSTATUS:BUSY\n";
+            echo "X-MICROSOFT-CDO-IMPORTANCE:1\n";
+            echo "X-MICROSOFT-DISALLOW-COUNTER:FALSE\n";
+            echo "X-MS-OLK-ALLOWEXTERNCHECK:TRUE\n";
+            echo "X-MS-OLK-AUTOFILLLOCATION:FALSE\n";
+            echo "X-MS-OLK-CONFTYPE:0\n";
+            //Here is to set the reminder for the event.
+            echo "BEGIN:VALARM\n";
+            echo "TRIGGER:-PT1440M\n";
+            echo "ACTION:DISPLAY\n";
+            echo "DESCRIPTION:Reminder\n";
+            echo "END:VALARM\n";
+            echo "END:VEVENT\n";
+            echo "END:VCALENDAR\n";
+    }
+
+
+
+    
+      
 }

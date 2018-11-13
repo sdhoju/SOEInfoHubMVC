@@ -108,9 +108,16 @@ tbody{
 }
 #t01 textarea{
     height: 400px;
-    width: 100%;
+    width: 155%;
     border-radius: 4px;
     color: black;
+}
+#t01  input[type='text'],input[type='email']{
+    width: 80%;
+}
+
+.announce-info  input[type='text']{
+    width: 100%!important;
 }
 
 table, th , td {
@@ -286,7 +293,7 @@ only screen and (max-width: 760px),
     .announcement-items.announcement-post{
         font-size: 1.15em;
         /* margin-left: 20px; */
-        max-width:  90%;    
+        max-width:  80%;    
         padding: 2em;
         display: block;
     
@@ -311,7 +318,7 @@ only screen and (max-width: 760px),
   
     #t01 textarea {
         height: 300px;
-        width: 90%;
+        width: 100%;
         border-radius: 4px;
         color: black;
     }
