@@ -10,7 +10,7 @@
 	?>
 		<div class='create-announcement-form'>
 			<form action='<?php echo URL; ?>announcement/submitAnnouncement' method='post'  enctype="multipart/form-data">
-                     <h3 style="font-size: 2em;">Please fill this form to submit an announcement</h3>
+                     <h3 style="font-size: 2em;text-align:center">Please fill this form to submit an announcement</h3>
 				<table id='t01'>
 					<tr><td>Tell us about yourself. </td></tr>
 					<tbody class="contact-info">

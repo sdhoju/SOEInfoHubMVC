@@ -4,9 +4,9 @@
 			<h3 class='announcement-post-title'>
 				<?php if (isset($announcement->announcement_Title)) echo htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8'); ?>
 			</h3>
-			<div id="attachment" style="max-width: 480px; max-height:480px" class="wp-caption alignright">
+			<div id="attachment" class="wp-caption alignright">
 			<!-- <div id="attachment_377" class="wp-caption alignleft"> -->
-				<img id="myImg"  class="announcement-post-image-header" src=<?php echo $announcement->announcement_media ?> alt=<?php $announcement->announcement_Title ?> >
+				<img id="myImg"  class="announcement-post-image-header" src="<?php echo URL.'uploads/placholder.jpg' ?>" alt=<?php $announcement->announcement_Title ?> >
 				<div id="myModal" class="modal">
 					<span class="close">&times;</span>
 					<img class="modal-content" id="img01">
@@ -15,7 +15,11 @@
 				</div>
 				<script src=<?php echo URL."_js/imagemodal.js" ?>></script>
 			</div>
-			<p><?php if (isset($announcement->announcement_Text)) echo htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8'); ?></p>
+		
+
+			<div class="announcement-description">
+				<?php if (isset($announcement->announcement_Text)) echo htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8'); ?>
+			</div>
 		</div>
 
 		<div class="aside">
@@ -25,9 +29,10 @@
 					<ul id="menu-sidebar-secondary-links" class="menu">
 						<li>
 						<form action="" method="post"> <input type="submit" value="Email to self"  name="email_to_self"/></form>
+					
 						</li>
 						<li >
-						
+
 						<?php $url = 'https:'.URL.trim($_SERVER['REQUEST_URI'], '/~sdhoju/SOEInfoHub/public/');
 							
 							echo '<a class="facebook-share-button" href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" target="_blank">Share it in facebook</a>';

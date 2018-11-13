@@ -1,5 +1,4 @@
 <?php
-	require_once(APP."libs/session.php");
 
 class Announcement extends Controller
 {
@@ -31,10 +30,17 @@ class Announcement extends Controller
 
     public function Form()
     {
-        
+        $link='	<br>
+        <center>
+            <h3>
+            <span><a href="'.URL.'announcement/Form">Fill Form</a></span>
+            <span><a href="'.URL.'announcement/index">List Announcemnts</a></span></h3>
+        </center>';
+
         $majors = $this->model->getAllMajor();
         $classifications = $this->model->getAllClassification();
         require APP . 'view/_templates/header.php';
+        echo $link;
         require APP . 'view/announcements/fill_Form.php';
         require APP . 'view/_templates/footer.php';
     }
@@ -52,7 +58,9 @@ class Announcement extends Controller
             $created_at= $created_at->format('Y\-m\-d\ h:i:s');
 
 
-            $result= $this->model->addAnnouncement($created_at,$announcement_ID, $_POST["contact_Name"], $_POST["email"], 
+            $result= $this->model->addAnnouncement(
+                $created_at,$announcement_ID,
+                 $_POST["contact_Name"], $_POST["email"], 
                         $_POST["phone"],$_POST["S_Organization"],
                          $_POST["announcement_Title"], $_POST["announcement_Text"], 
                         $_POST["announcement_Location"],$_POST["start_day"],
@@ -60,16 +68,23 @@ class Announcement extends Controller
                         $_POST["major"], $_POST["classification"],$file_names);
                     
         }
-        if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) ){
+        if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) )
+        {
+            //Upload File
             for($i=0; $i<sizeof($file_names);$i++){
                 $img = $file_names[$i];
                 $time=time();
                 move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
             }
 
-            $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
-                                    School of Engineering with review the announcement. TODO: mail here";        }
 
+            //Generate the Submission message
+            $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
+                                    School of Engineering with review the announcement. TODO: mail here";       
+
+            //Send Email notification to Submitter
+            $this->submitEmail($_POST["contact_Name"], $_POST["email"], $_POST["announcement_Title"]);
+        }
         else{
             $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
         }
@@ -109,6 +124,38 @@ class Announcement extends Controller
             
             return $errors;
     }
+
+
+    public function submitEmail($names,$emails,$announcement_Title){
+        //Send Email to creater
+        $to=array();
+        for($i=0; $i<sizeof($emails); $i++) {
+                $to[]=    array('name'=> $names[$i],'email'=> $emails[$i]);
+            }
+      
+        $subject=$announcement_Title;
+        $html="Thank you, <br>
+                Your submission for $announcement_Title has been received. School of Engineering will review this event and send it out to students.";
+        $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+        $replyto=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+
+        $ContactMailer = new Mailer(true);
+        $ContactMailer->mail($to,$subject,$html,$from,$replyto);
+
+        //Send email to Admin
+        $toAdmin = array('email'=>'sdhoju@go.olemiss.edu');
+        $subject='SOEInfoHub Submission Received';
+        $html="$names[0] has submitted an event on $announcement_Title.<br>
+                Please review this event. Thank You! ";
+        $from=array('name'=>$names[0],'email'=>$emails[0]);
+        $replyto=array('name'=>$names[0],'email'=>$emails[0]);
+       
+        $adminMailer = new Mailer(true);
+        $adminMailer->mail($to,$subject,$html,$from,$replyto);
+    }
+
+
+
 
     public function getAnnouncementByID($announcement_ID)
     {   

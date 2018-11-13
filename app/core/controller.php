@@ -1,5 +1,8 @@
 <?php
     // 	
+    require_once(APP."libs/Mailer.php");
+    require_once(APP."libs/session.php");
+
 
 class Controller
 {
@@ -39,4 +42,7 @@ class Controller
         require APP . 'model/model.php';
         $this->model = new Model($this->db);
     }
+
+    
+   
 }
