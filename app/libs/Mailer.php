@@ -32,6 +32,10 @@ if(!class_exists('Mailer')){
 
         public function mail($to=array(),$subject,$html,$from=array(),$plaintext=false,$cc=array(),$bcc=array(),$attachments=array()){
             if(empty($to) || empty($from) || empty($subject)|| empty($html)){
+                print_r($to);
+                print_r($from);
+                print_r($subject);
+                print_r($html);
                 die('Missing a parameter');
             }
             

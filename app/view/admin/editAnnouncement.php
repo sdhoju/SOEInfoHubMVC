@@ -12,7 +12,7 @@
 			<form action='<?php echo URL; ?>announcement/submitAnnouncement' method='post'  enctype="multipart/form-data">
 			<center> <h3 style="font-size: 2em;text-align:center">Please complete this form to submit an announcement about your event.</h3>
 					 
-				<table class='announcementform' >
+				<table class='announcementform' style="    width: 60%; background-color: #14213d;">
 					<tr><td>Tell us about yourself. </td></tr>
 					<tbody class="contact-info">
 						<tr><td>Contact Name <span class="asterisk">*</span> </td><tr></tr><td><input type = text name ='contact_Name[]' value= '' required/></td></tr>
@@ -25,8 +25,6 @@
 						<tr><td colspan="2"><hr/></td></tr>
 
 					</tbody>
-
-
 					<tbody class="announce-info">
 						<tr><td>Lets talk about the event.</td></tr>
 						<tr><td>Event's Title <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Title' value='' required /> </td></tr>

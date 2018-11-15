@@ -1,17 +1,26 @@
+<div  id="secmid">
+	<div  id="innercontent">
+		
+					<div class="card">
+					<?php 
+								if (($output = message()) !== null) {
+									echo $output;
+									$output=null;
+								}
+							?>
+						<div class="container-card">
+						<form action='<?php echo URL; ?>SOEInfoHubadmin/login' method="post">
+							<h3 style="font-size:1.8em; padding-botton:2em;">Login </h3>
+									<p>Username:
+							<input type="text" name="username"  required/>
+							</p>
+							<p>Password:
+							<input type="password" name="password" value="" required/>
+							</p>
+							<input type="submit" name="login" value="login" class="login-button" />
+						</form>
+						</div>
+					</div>
 
-			<h3>Welcome to Hooper Hollow Cottages!</h3>
-			<label  for='center-label' class='center'>
-
-			<form action="index2017.php" method="post">
-			  <p>&nbsp;&nbsp;Username:&nbsp;&nbsp;
-				<input type="text" name="username"  />
-			  </p>
-			  <p>&nbsp;&nbsp;Password:&nbsp;&nbsp;
-				<input type="password" name="password" value="" />
-			  </p>
-			  <input type="submit" name="submit" value="submit-login" class="tiny round button" />
-			</form>
-			</label>
-			</div>
 	</div>
 </div>

@@ -28,16 +28,28 @@
 					<h2>Sidebar Secondary Links</h2>
 					<div id="menu-location-" class="menu-sidebar-secondary-links-container">
 						<ol style="list-style-type: none;">
+						
+							<?php //check if admin view 
+								if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {										
+								}else{
+									echo "<li><a href = ".URL . 'SOEInfoHubadmin/edit/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
+									Make changes to this Event</a></li>";
+								}
+							?>
+							
+						
 							<li style=" padding:1.25em;">
 								
 
-								<?php $url = 'https:'.URL.trim($_SERVER['REQUEST_URI'], '/~sdhoju/SOEInfoHub/public/');
-									
-									echo '<a class="facebook-share-button" href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" target="_blank">Share it in facebook</a>';
-									// <a href="http://asb.olemiss.edu/resources/calendar-of-events/">Calendar of Events</a>
+								<?php $url = 'https:'.URL;
+									$title= $announcement->announcement_Title;
+									echo '<a class="facebook-share-button" href="https://www.facebook.com/sharer.php?u='.urlencode($url).'&t='.urlencode($title).'" target="_blank">Share it in facebook</a>';
 								?>
-						
-							
+
+						<?php
+
+                ?>
+		
 							<?php 
 							        date_default_timezone_set('America/Chicago');
 									$start_day =  str_replace("-", "", $announcement->start_day);

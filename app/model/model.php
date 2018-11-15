@@ -16,10 +16,11 @@ class Model
     public function getAllAnnouncements()
     {
         $sql ="SELECT announcement.announcement_ID as announcement_ID, announcement_Title, announcement_Text, announcement_Location , start_day,start_time,end_day,end_time, 
-                                group_Concat(Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(phone) as phones,group_Concat(s_organization) as orgs,
+                                group_Concat(DISTINCT  Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(  phone) as phones,group_Concat(  s_organization) as orgs,
                                 group_Concat(file_name) as attachments
                                 from (announcement natural join submitter)
-                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID; ";
+                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID;
+                                limit 10";
 
         $query = $this->db->prepare($sql);
         // useful for debugging: you can see the SQL behind above construction by using:
@@ -53,8 +54,6 @@ class Model
         $announcement_Title,$announcement_Text,$announcement_Location,$start_day,$start_time,$end_day,$end_time,
         $majors,$classifications,$filenames)
     {
-        
-       
         
         $parameters = array(':created_at' => $created_at, 
                             ':announcement_ID' => $announcement_ID, 
@@ -129,7 +128,7 @@ class Model
         return $reults;
     }
 
-
+    
    
 
     public function getAllMajor()
@@ -148,4 +147,15 @@ class Model
         $query->execute();
         return $query->fetchAll();
     }
+
+
+
+
+
+
+
+
+
+
+    
 }

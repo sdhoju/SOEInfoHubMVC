@@ -8,24 +8,39 @@ class Announcement extends Controller
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/announcements/index
      */
-    
     public function index()
     {
-        $link='	<br>
-        <center>
-            <h3>
-            <span><a href="'.URL.'announcement/Form">Fill Form</a></span>
-            <span><a href="dashboard.php">List Announcemnts</a></span></h3>
-        </center>';
-
-        $announcements = $this->model->getAllAnnouncements();
-        // $total_announcements = $this->model->getAmountOfAnnouncements();
-       // load views. within the views we can echo out $songs and $amount_of_songs easily
+        $announcements = $this->model->getAllAnnouncements();    
         require APP . 'view/_templates/header.php';
-        echo $link;
-
         require APP . 'view/announcements/index.php';
         require APP . 'view/_templates/footer.php';
+    }
+
+    public function getAnnouncementByID($announcement_ID)
+    {   
+        $link='	<br>
+            <center>
+                <h3>
+                <span><a href="'.URL.'">Feed </a></span>
+                <span><a href="'.URL.'announcement/submitAnnouncement">Fill Form</a></span>
+                <span><a href="dashboard.php">List Announcemnts</a></span></h3>
+            </center>';
+
+        $announcement = $this->model->getAnnouncementByID($announcement_ID);
+        $text = urldecode($announcement->announcement_Text);
+        $title = urldecode($announcement->announcement_Title);
+        require APP . 'view/_templates/fbheader.php';
+        echo $link;
+        require APP . 'view/announcements/announcement1.php';
+        require APP . 'view/_templates/footer.php';
+    }
+        public function shareInFacebook($announcement_ID)
+        {
+        // if we have an id of a song that should be deleted
+        if (isset($announcement_ID)) {
+            // do deleteSong() in model/model.php
+            $this->model->deleteSong($song_id);
+        }
     }
 
     public function Form()
@@ -66,28 +81,28 @@ class Announcement extends Controller
                         $_POST["announcement_Location"],$_POST["start_day"],$_POST["start_time"],
                         $_POST["end_day"],  $_POST["end_time"],
                         $_POST["major"], $_POST["classification"],$file_names);
-                    
-        }
-        if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) )
-        {
-            //Upload File
-            for($i=0; $i<sizeof($file_names);$i++){
-                $img = $file_names[$i];
-                $time=time();
-                move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+            if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) )
+            {
+                //Upload File
+                for($i=0; $i<sizeof($file_names);$i++){
+                    $img = $file_names[$i];
+                    $time=time();
+                    move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+                }
+    
+    
+                //Generate the Submission message
+                $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
+                                        The School of Engineering will review and release the announcement soon. ";       
+    
+                //Send Email notification to Submitter
+                $this->submitEmail($_POST["contact_Name"], $_POST["email"], $_POST["announcement_Title"]);
             }
-
-
-            //Generate the Submission message
-            $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
-                                    School of Engineering with review the announcement. TODO: mail here";       
-
-            //Send Email notification to Submitter
-            $this->submitEmail($_POST["contact_Name"], $_POST["email"], $_POST["announcement_Title"]);
+            else{
+                $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
+            }        
         }
-        else{
-            $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
-        }
+        
         header('location: ' . URL.'announcement/Form' );
     }
 
@@ -135,7 +150,7 @@ class Announcement extends Controller
       
         $subject=$announcement_Title;
         $html="Thank you, <br>
-                Your submission for $announcement_Title has been received. School of Engineering will review this event and send it out to students.";
+                Your submission for $announcement_Title has been received. The School of Engineering will review this event and send it out to students.";
         $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
         $replyto=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
 
@@ -146,7 +161,9 @@ class Announcement extends Controller
         $toAdmin=array();
         $toAdmin[] = array(
                 'name'=>'School of Engineering',
-                'email'=>'sdhoju@go.olemiss.edu');
+                'email'=>'sdhoju@go.olemiss.edu'
+            );
+            
         $subject='SOEInfoHub Submission Received';
         $html="$names[0] has submitted an event on $announcement_Title.<br>
                 Please review this event. Thank You! ";
@@ -166,11 +183,10 @@ class Announcement extends Controller
             $to[]=array('email'=> "$email");
 
             $subject=$announcement->announcement_Title;
-            $html='<h3>"'.$announcement->announcement_Title.'"</h3>
-                    <img id="myImg"  class="announcement-post-image-header" 
-                    src="'.ROOT.'uploads/'.$announcement->file_name.'">		
+            $html='<h3>'.$announcement->announcement_Title.'</h3>
+                    <img  src="http:'.URL.'public/uploads/'.$announcement->file_name.'" alt="attachment">		
             <p>'. $announcement->announcement_Text.'</p>';
-            
+            // echo $html; exit();
             $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
     
             $newMailer = new Mailer(true);
@@ -184,30 +200,7 @@ class Announcement extends Controller
 
 
 
-    public function getAnnouncementByID($announcement_ID)
-    {   
-        $link='	<br>
-            <center>
-                <h3>
-                <span><a href="'.URL.'">Feed </a></span>
-                <span><a href="'.URL.'announcement/submitAnnouncement">Fill Form</a></span>
-                <span><a href="dashboard.php">List Announcemnts</a></span></h3>
-            </center>';
-
-        $announcement = $this->model->getAnnouncementByID($announcement_ID);
-        require APP . 'view/_templates/header.php';
-        echo $link;
-        require APP . 'view/announcements/announcement1.php';
-        require APP . 'view/_templates/footer.php';
-    }
-        public function shareInFacebook($announcement_ID)
-        {
-        // if we have an id of a song that should be deleted
-        if (isset($announcement_ID)) {
-            // do deleteSong() in model/model.php
-            $this->model->deleteSong($song_id);
-        }
-    }
+   
 
 
     public function getISC($announcement_ID){

@@ -2,6 +2,8 @@
     // 	
     require_once(APP."libs/Mailer.php");
     require_once(APP."libs/session.php");
+    require_once(APP."libs/functions.php");
+
 
 
 class Controller
@@ -13,6 +15,7 @@ class Controller
     {
         $this->openDatabaseConnection();
         $this->loadModel();
+        $this->loadAdminModel();
     }
 
     private function openDatabaseConnection()
@@ -42,7 +45,11 @@ class Controller
         require APP . 'model/model.php';
         $this->model = new Model($this->db);
     }
-
+    public function loadAdminModel()
+    {
+        require APP . 'model/admin.php';
+        $this->admin = new Admin($this->db);
+    }
     
    
 }

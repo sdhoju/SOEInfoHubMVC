@@ -176,7 +176,7 @@
 				<li><a href="http://www.olemiss.edu/info/creed.html">UM Creed</a></li>
 			</ul>
 			<div class="copyright">
-				<a href="/info/copy.html">Copyright ©2018 The University of Mississippi. All Rights Reserved.</a>
+				<a href="/info/copy.html">Copyright ï¿½2018 The University of Mississippi. All Rights Reserved.</a>
 							</div>
 			<div class="mspublicuniversities"> <a href="http://www.mississippi.edu/transparency"><img src="/_images/logo/MississippiSchools.png" alt="Mississippi Public Universities: Advancing Our State Together"></a> </div>
 		</div>

@@ -1,0 +1,110 @@
+#secmid {
+    margin: auto;
+    position: relative;
+    clear: left;
+    display: block;
+    width:90%
+}
+.admin-main{
+	font-size: 1.5em;
+
+}
+.searchbar
+{
+    /* width: 250px; */
+    font-size: 1.25em;
+    height: 20px;
+    max-height: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    display: block;
+    padding: 2em;
+
+}
+.logout-button{
+    right: 10px;
+    position: absolute;
+    margin: 10px;
+}
+.admin-main th{
+    text-align: center;
+}
+.admin-main tr{
+    padding-left: 10px;
+}
+
+.admin_dashboard table{
+    background-color: #14213D;
+    width:100%;
+	margin-left: 10%;
+    margin-right: 10%;
+}
+.admin_dashboard tr{
+    padding-bottom: 5em;
+    border-bottom: 3px solid #ccc;
+    border-left: 3px solid #ccc;
+    border-right: 3px solid #ccc;
+
+}
+
+.admin-dashboard-head{
+    background-color:#14213D !important;
+    color:whitesmoke;
+    height: 50px;
+    /* border: 1px solid #ccc; */
+}
+
+.admin_dashboard tr:hover {background-color:#bfebff;}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+    .admin-main table, 
+    .admin-main thead, .admin-main tbody, 
+    .admin-main th, 
+    .admin-main td, 
+    .admin-main tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.admin-main thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+    .admin-main  tr { border: 1px solid #ccc; }
+	.admin-main  tr:hover ,	.admin-main  tr:active { background: white; }
+	td { 
+		/* Behave  like a "row" */
+        position: relative;
+        padding-left: 25%;
+        padding-bottom: 18px;
+
+    }
+	
+	td:before { 
+		/* Now like a table header */
+        position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 25%; 
+		padding-right: 10px; 
+        /* white-space: nowrap; */
+        display: block;
+	}
+	
+	/*
+	Label the data
+	*/
+	td:nth-of-type(1):before { content: "Title:"; }
+	td:nth-of-type(2):before { content: "Contact \A Name:"; }
+	td:nth-of-type(3):before { content: "Detail:"; }
+	td:nth-of-type(4):before { content: "Edit:"; }
+	td:nth-of-type(5):before { content: "Publish:"; }
+	td:nth-of-type(6):before { content: "Delete:"; }
+
+}
