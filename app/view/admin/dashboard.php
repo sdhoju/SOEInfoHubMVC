@@ -5,16 +5,20 @@
 		<div class="searchbar">
 			<!-- The School of Engineering Information Hub dashboard.  -->
 
-		<?php
-			if (($output = message()) !== null) {
-				echo $output;
-				$output=null;
-			}
-			$admin = $_SESSION["admin"];
-			?>
-			<span class="logout-button">			Hi <?php echo $admin;?>!&nbsp;
-			<a href=<?php echo URL;?>SOEInfoHubadmin/logout >  LOG OUT</a></span>
+			<?php
+				if (($output = message()) !== null) {
+					echo $output;
+					$output=null;
+				}
+				$admin = $_SESSION["admin"];
+				?>
+				<div class="logout-button">			
+					Hi <?php echo $admin;?>!&nbsp;
+					<a href=<?php echo URL;?>SOEInfoHubadmin/logout >  LOG OUT</a>
+				</div>
+
 			</div>
+
 			<div class="admin-main">
 
 
@@ -35,7 +39,7 @@
 				foreach ($announcements as $row)  {
 					echo '<tr ">';
 					$string=htmlspecialchars($row->announcement_Text, ENT_QUOTES, 'UTF-8');
-					echo "<td><a href = 'announcement1.php?id=".urldecode($row->announcement_ID)."' >".$row->announcement_Title."</a></td>";
+					echo "<td><a href = ".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">".$row->announcement_Title."</a></td>";
 					$contact_Names = explode(',', $row->contact_Names);
 					echo "<td>";
 					foreach($contact_Names as $name){
@@ -59,16 +63,16 @@
 						} 
 						echo "<td style='text-align:center;'><a href = ".URL . 'SOEInfoHubadmin/edit/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">EDIT</a></td>";
 
-						echo '<td style="text-align:center;"><form action="" method="post">';
+						echo '<td style="text-align:center;"><form action='.URL . 'SOEInfoHubadmin/publish/'.htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').' method="post">';
 							echo'<input type="submit" value='.$value.' class='.$class.'>';
-							echo'<input type="hidden" name="button_pressed" value='.$row->announcement_ID.' />';
+							echo'<input type="hidden" name="publish_announcement" value="" >';
 						echo'</form></td>';
 						
 						echo '<td style="text-align:center;"><form action='.URL .'SOEInfoHubadmin/delete/ method="post">';
 							echo'<input type="submit" value="Delete" name="delete_announcement">';
 							echo'<input type="hidden" name="announcement_ID" value='. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').' />';
 						echo'</form></td>';
-						echo "<td style='text-align:center;'><a href =".URL .'SOEInfoHubadmin/delete/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8')." onclick='return confirm_delete();'><i class='fa fa-trash'></i> </a></td>";
+						// echo "<td style='text-align:center;'><a href =".URL .'SOEInfoHubadmin/delete/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8')." onclick='return confirm_delete();'><i class='fa fa-trash'></i> </a></td>";
 
 					echo "</tr>";
 				}

@@ -32,7 +32,7 @@
 							<?php //check if admin view 
 								if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {										
 								}else{
-									echo "<li><a href = ".URL . 'SOEInfoHubadmin/edit/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
+									echo "<li><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
 									Make changes to this Event</a></li>";
 								}
 							?>
@@ -66,8 +66,8 @@
 
 								<?php echo "<a href = ".URL . 'announcement/getISC/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8').">Calendar isc</a>";?>
 
-								<?php echo "<form action=".URL."announcement/EmailtoFriend/$announcement->announcement_ID method='post'>
-								<input type='email'  name='email'/><input type='submit' value='Email to Self/Friend'  name='email_to_friend'/></form>";?>
+								<?php echo "<form action=".URL."announcement/EmailtoFriend/$announcement->announcement_ID method='post' >
+								<input type='email'  name='email' required /><input type='submit' value='Email to Self/Friend'  name='email_to_friend'/></form>";?>
 						
 							</li>
 						</ol>

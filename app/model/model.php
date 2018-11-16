@@ -19,7 +19,7 @@ class Model
                                 group_Concat(DISTINCT  Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(  phone) as phones,group_Concat(  s_organization) as orgs,
                                 group_Concat(file_name) as attachments
                                 from (announcement natural join submitter)
-                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID;
+                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID where Published =1 group by announcement.announcement_ID ;
                                 limit 10";
 
         $query = $this->db->prepare($sql);
