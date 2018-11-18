@@ -3,7 +3,6 @@
 class Announcement extends Controller
 {
 
-   
     /**
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/announcements/index
@@ -18,21 +17,34 @@ class Announcement extends Controller
 
     public function getAnnouncementByID($announcement_ID)
     {   
-        $link='	<br>
-            <center>
-                <h3>
-                <span><a href="'.URL.'">Feed </a></span>
-                <span><a href="'.URL.'announcement/submitAnnouncement">Fill Form</a></span>
-                <span><a href="dashboard.php">List Announcemnts</a></span></h3>
-            </center>';
+      
 
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
-        $text = urldecode($announcement->announcement_Text);
-        $title = urldecode($announcement->announcement_Title);
-        require APP . 'view/_templates/fbheader.php';
-        echo $link;
-        require APP . 'view/announcements/announcement1.php';
-        require APP . 'view/_templates/footer.php';
+        if( $announcement->published==0){
+            if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"]) ) {
+                header('location: ' . URL . 'problem');
+            }else{
+                if(!empty($announcement)){
+                    $text = urldecode($announcement->announcement_Text);
+                    $title = urldecode($announcement->announcement_Title);
+                    require APP . 'view/_templates/fbheader.php';
+                    require APP . 'view/announcements/announcement1.php';
+                    require APP . 'view/_templates/footer.php';
+                }
+            }
+        }else{
+            if(!empty($announcement)){
+                $text = urldecode($announcement->announcement_Text);
+                $title = urldecode($announcement->announcement_Title);
+                require APP . 'view/_templates/fbheader.php';
+                require APP . 'view/announcements/announcement1.php';
+                require APP . 'view/_templates/footer.php';
+            }
+        }
+        header('location: ' . URL . 'problem');
+
+      
+
     }
         public function shareInFacebook($announcement_ID)
         {
@@ -45,17 +57,10 @@ class Announcement extends Controller
 
     public function Form()
     {
-        $link='	<br>
-        <center>
-            <h3>
-            <span><a href="'.URL.'announcement/Form">Fill Form</a></span>
-            <span><a href="'.URL.'announcement/index">List Announcemnts</a></span></h3>
-        </center>';
-
+      
         $majors = $this->model->getAllMajor();
         $classifications = $this->model->getAllClassification();
         require APP . 'view/_templates/header.php';
-        echo $link;
         require APP . 'view/announcements/fill_Form.php';
         require APP . 'view/_templates/footer.php';
     }
@@ -63,82 +68,100 @@ class Announcement extends Controller
 
     public function submitAnnouncement()
     {
-        if (isset($_POST["submit_announcement"])) {
-            // $errors = checkFile($_POST['attachments']);
-            $file_names = $_FILES['attachments']['name'];
-            $announcement_ID=time();
-
-            date_default_timezone_set('America/Chicago');
-            $created_at= new DateTime();
-            $created_at= $created_at->format('Y\-m\-d\ h:i:s');
-
-
-            $result= $this->model->addAnnouncement(
-                $created_at,$announcement_ID,
-                 $_POST["contact_Name"], $_POST["email"], 
-                        $_POST["phone"],$_POST["S_Organization"],
-                         $_POST["announcement_Title"], $_POST["announcement_Text"], 
-                        $_POST["announcement_Location"],$_POST["start_day"],$_POST["start_time"],
-                        $_POST["end_day"],  $_POST["end_time"],
-                        $_POST["major"], $_POST["classification"],$file_names);
-            if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) )
+        //Lets check the file 
+        function checkFile(){
+            $valid = false;
+            $errors=array();
+            for ($i=0; $i<sizeof($_FILES['attachments']['name']);$i++)
             {
-                //Upload File
-                for($i=0; $i<sizeof($file_names);$i++){
-                    $img = $file_names[$i];
-                    $time=time();
-                    move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+                $file_name = $_FILES['attachments']['name'][$i];
+                $file_size =$_FILES['attachments']['size'][$i];
+                $file_type=$_FILES['attachments']['type'][$i];
+                
+                $file_ext=strtolower(end(explode('.',  $_FILES['attachments']['name'][$i])));
+                $extensions= array("jpeg","jpg","png","pdf");
+                if(in_array($file_ext,$extensions) === false){
+                    $errors[]="extension not allowed, please choose a JPEG,JPG,PNG or PDF file.";
+                    $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n".$file_ext." khdsa";
                 }
-    
-    
-                //Generate the Submission message
-                $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
-                                        The School of Engineering will review and release the announcement soon. ";       
-    
-                //Send Email notification to Submitter
-                $this->submitEmail($_POST["contact_Name"], $_POST["email"], $_POST["announcement_Title"]);
+                
+                if($file_size > 5242880){
+                    $errors[]='File size must be smaller than 5 MB';
+                    $_SESSION["message"] = "File size must be smaller than 5 MB \n";
+                }
             }
-            else{
-                $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
-            }        
+
+            if(empty($errors)==true){
+                $valid = true;
+            }
+            return $valid;
+        }
+
+        
+        //Submit button was pressed
+        if (isset($_POST["submit_announcement"])) {
+            
+            //File meets the requirement of being image or pdf file smaller than 5MB
+            if(checkfile()){
+
+                $file_names = $_FILES['attachments']['name'];
+                $file_types  = $_FILES['attachments']['type'];
+
+                $announcement_ID=time();
+                date_default_timezone_set('America/Chicago');
+                $created_at= new DateTime();
+                $created_at= $created_at->format('Y\-m\-d\ h:i:s');
+
+                $result= $this->model->addAnnouncement(
+                            $created_at,
+                            $announcement_ID,
+                            $_POST["contact_Name"], 
+                            $_POST["email"], 
+                            $_POST["phone"],
+                            $_POST["S_Organization"],
+                            $_POST["announcement_Title"],
+                            $_POST["announcement_Text"], 
+                            $_POST["announcement_Location"],
+                            $_POST["start_day"],
+                            $_POST["start_time"],
+                            $_POST["end_day"],
+                            $_POST["end_time"],
+                            $_['external_link'],
+                            $_POST["major"], 
+                            $_POST["classification"],
+                            $file_names,
+                            $file_types );
+                if ($result==(1+sizeof($_POST["contact_Name"]) +sizeof($_POST["major"])+sizeof($_POST["classification"]) +sizeof($file_names) ) )
+                {
+                    //Upload File
+                    for($i=0; $i<sizeof($file_names);$i++){
+                        $img = $file_names[$i];
+                        $time=time();
+                        move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+                    }
+        
+        
+                    //Generate the Submission message
+                    $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
+                                            The School of Engineering will review and release the announcement soon. ";       
+        
+                    //Send Email notification to Submitter
+                    $this->submitEmail($_POST["contact_Name"], $_POST["email"], $_POST["announcement_Title"]);
+                }
+                else{
+                    $_SESSION["message"] = "Sorry, your submission wasn't submitted. ";
+                }
+            
+            
+            
+            }
+
         }
         
         header('location: ' . URL.'announcement/Form' );
     }
 
-    public function checkFile(){
-            $errors= array();
-             
-
-            $file_name = $_FILES['attachment']['name'];
-            $file_size =$_FILES['attachment']['size'];
-            $file_tmp =$_FILES['attachment']['tmp_name'];
-            $file_type=$_FILES['attachment']['type'];
-            $file_ext=strtolower(end(explode('.',$_FILES['attachment']['name'])));
-            $expensions= array("jpeg","jpg","png","pdf");
-            
-            if(in_array($file_ext,$expensions)=== false){
-                $errors[]="extension not allowed, please choose a JPEG or PNG file.";
-            }
-            
-            if($file_size > 2097152){
-                $errors[]='File size must be excately 2 MB';
-            }
-            if(empty($errors)==true){
-                $query ="insert into announcementFile (announcement_ID,file_name) values('$name','$img');";
-                $result = $mysqli->query($query); 
-                    if($result) {
-                        move_uploaded_file($_FILES['image']['tmp_name'],"upload/$img");
-            
-                    }else{
-                        print_r($query);
-                    }
-            }else{
-                print_r($errors);
-            }
-            
-            return $errors;
-    }
+     
 
 
     public function submitEmail($names,$emails,$announcement_Title){
@@ -173,6 +196,7 @@ class Announcement extends Controller
         $adminMailer = new Mailer(true);
         $adminMailer->mail($toAdmin,$subject,$html,$from,$replyto);
     }
+
 
     public function EmailtoFriend($announcement_ID){
         if (isset($_POST["email_to_friend"])) {

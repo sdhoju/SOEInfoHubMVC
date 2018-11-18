@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS announceMajor,announceCls;
-DROP TABLE IF EXISTS SOEIHadmin, major, classification, submitter, announcementFile;
+DROP TABLE IF EXISTS major, classification, submitter, announcementFile;
+
 DROP TABLE IF EXISTS announcement; 
 
 CREATE TABLE announcement(
@@ -12,15 +13,16 @@ CREATE TABLE announcement(
     start_time TIME,
     end_day DATE,
     end_time TIME,
+    external_link VARCHAR(200),
 	published  TINYINT(1),
 	PRIMARY KEY(announcement_ID)
 );
 
-CREATE TABLE SOEIHadmin(
-    username VARCHAR(15) NOT NULL,
-    password VARCHAR(60),
-    PRIMARY KEY (username)
-);
+-- CREATE TABLE SOEIHadmin(
+--     username VARCHAR(15) NOT NULL,
+--     password VARCHAR(60),
+--     PRIMARY KEY (username)
+-- );
 
 CREATE TABLE major(
   major_ID   int(2) NOT NULL AUTO_INCREMENT,
@@ -65,13 +67,12 @@ CREATE TABLE announcementFile(
     file_ID Int(10) Not Null AUTO_INCREMENT,
     announcement_ID	Int(20) NOT NULL,
    	file_name VARCHAR(200),
+    file_type VARCHAR(10),
     PRIMARY KEY(file_ID),
     FOREIGN KEY (announcement_ID) REFERENCES announcement(announcement_ID)
 );
 
-
 INSERT into major(major_Name) VALUES
-			("Biochemistry"),
 			("Biomedical Engineering"),
 			("Chemical Engineering"),
 			("Civil Engineering"),
@@ -80,7 +81,8 @@ INSERT into major(major_Name) VALUES
 			("General Engineering"),
 			("Geological Engineering"),
 			("Geology"),
-			("Mechanical Engineering");
+			("Mechanical Engineering"),
+			("Other");
 
 
 INSERT into classification(cls_Name) VALUES
@@ -88,7 +90,8 @@ INSERT into classification(cls_Name) VALUES
 			("Sophpmore"),
 			("Junior"),
 			("Senior"),
-			("Graduate");
+			("Graduate"),
+            ("Other");
 
 
 

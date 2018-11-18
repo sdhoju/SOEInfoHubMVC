@@ -5,9 +5,18 @@ class SOEInfoHubAdmin extends Controller
     public function index()
     {
         // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/admin/login.php';
-        require APP . 'view/_templates/footer.php';
+ 
+
+        if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
+            require APP . 'view/_templates/header.php';
+            require APP . 'view/admin/login.php';
+            require APP . 'view/_templates/footer.php';
+        }else{
+            $announcements = $this->admin->getAllAnnouncements();
+            require APP . 'view/_templates/header.php';
+            require APP . 'view/admin/dashboard.php';
+            require APP . 'view/_templates/footer.php';
+        }
     }
 
 
@@ -83,11 +92,15 @@ class SOEInfoHubAdmin extends Controller
         }
     }
     
-    public function publish($_announcement_ID){
+    public function publish($announcement_ID){
         if(isset($_POST["publish_announcement"])) {
-            $result = $this->admin->togglePublish($_announcement_ID);
+            $result = $this->admin->togglePublish($announcement_ID);
             if($result==1){
-                $_SESSION["message"] = "Publsih Status has been changed";
+                $_SESSION["message"] = "Publish Status has been changed";
+                $published_status = $this->admin->getPublishStatus($announcement_ID);
+                // if($published_status->published==1); {
+                //     $this->EmailtoAll($announcement_ID);
+                // }
                 header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
             }
             else{
@@ -132,6 +145,38 @@ class SOEInfoHubAdmin extends Controller
          header('location: ' . URL.'SOEInfoHubadmin/index' );
         }
     
+     public function EmailtoAll($announcement_ID){
+            // str($email);
+
+            $announcement = $this->model->getAnnouncementByID($announcement_ID);
+            $majors= $this->admin->getAnnounceMajorByID($announcement_ID);
+
+            foreach($majors as $major){
+                $students[] = $this->admin->getStudentsByMajorID($major->major_ID);
+            }
+
+            $to=array('name'=>'Soul Shakerrr','email'=>'sdhoju@go.olemiss.edu');
+
+                foreach($students as $student){
+                    if(sizeof($student)>0){
+                        foreach($student as $s)
+                        $to[] = array('name'=> "$s->first_name $s->middle_name $s->last_name ",
+                            'email'=> "$s->email");
+                    }  
+                } ;
+            
+            // print_r($to );exit();
+
+
+            $subject=$announcement->announcement_Title;
+            $html='<h3>'.$announcement->announcement_Title.'</h3>
+                    <img  src="http:'.URL.'public/uploads/'.$announcement->file_name.'" alt="attachment" >		
+            <p>'. $announcement->announcement_Text.'</p>';
+            // echo $html; exit();
+            $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
     
+            $newMailer = new Mailer(true);
+            $newMailer->mail($to,$subject,$html,$from);        
+        }
 
 }

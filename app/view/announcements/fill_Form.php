@@ -9,8 +9,12 @@
 		}
 	?>
 		<div class='create-announcement-form'>
+
 			<form action='<?php echo URL; ?>announcement/submitAnnouncement' method='post'  enctype="multipart/form-data">
-			<center> <h3 style="font-size: 2em;text-align:center">Please complete this form to submit an announcement about your event.</h3>
+			<center>
+					<a href="<?php echo URL;?>" style="  font-size:2em; ">Back to feed page</a>
+ 
+				<h3 style="font-size: 2em;text-align:center">Please complete this form to submit an announcement about your event.</h3>
 					 
 				<table class='announcementform' >
 					<tr><td>Tell us about yourself. </td></tr>
@@ -110,7 +114,9 @@
 					<tr></tr>
 					<tr><td colspan="2"><hr/></td></tr>
 
-					<td  class="form-submission" colspan="2"><input class="form_submit_button" type= 'submit' name= 'submit_announcement' value= 'Submit'/> <td>
+					<td  class="form-submission" colspan="2"><input class="form_submit_button" type= 'submit' name= 'submit_announcement' value= 'Submit'/>
+						<a href="<?php echo URL;?>" style="color:white; font-size:1.5em;">Go back</a>
+					<td>
 					
 				</table>	
 				</center>	

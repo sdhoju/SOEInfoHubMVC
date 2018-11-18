@@ -146,5 +146,33 @@ class Admin extends Model
         return $reults;
     }
 
+    
+    public function getPublishStatus($announcement_ID){
+        $sql ="select Published from announcement where announcement_ID=:announcement_ID";
+        $query = $this->db->prepare($sql);
+        $parameters = array( ':announcement_ID' => $announcement_ID    );
+        $query->execute($parameters);
+        return $query->fetch();
+
+    }
+    
+    public function getAnnounceMajorByID($announcement_ID){
+        $sql ="select major_ID from announceMajor where announcement_ID=:announcement_ID";
+        $query = $this->db->prepare($sql);
+        $parameters = array( ':announcement_ID' => $announcement_ID    );
+        $query->execute($parameters);
+        return $query->fetchAll();
+
+    }
+    
+
+    public function getStudentsByMajorID($major_ID){
+        $sql ="select * from students where major_ID=:major_ID";
+        $query = $this->db->prepare($sql);
+        $parameters = array( ':major_ID' => $major_ID    );
+        $query->execute($parameters);
+        return $query->fetchAll();
+
+    }
 
 }

@@ -13,6 +13,8 @@
 				$admin = $_SESSION["admin"];
 				?>
 				<div class="logout-button">			
+				<a href=<?php echo URL;?> >Feed Page </a>
+
 					Hi <?php echo $admin;?>!&nbsp;
 					<a href=<?php echo URL;?>SOEInfoHubadmin/logout >  LOG OUT</a>
 				</div>
@@ -61,7 +63,7 @@
 							$class='published-button';
 							$value = 'Unpublish';
 						} 
-						echo "<td style='text-align:center;'><a href = ".URL . 'SOEInfoHubadmin/edit/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">EDIT</a></td>";
+						echo "<td style='text-align:center;'><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">EDIT</a></td>";
 
 						echo '<td style="text-align:center;"><form action='.URL . 'SOEInfoHubadmin/publish/'.htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').' method="post">';
 							echo'<input type="submit" value='.$value.' class='.$class.'>';

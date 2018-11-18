@@ -23,7 +23,7 @@
 				</div>
 			</div>
 
-			<div class="aside">
+			<div class="rightsidebar">
 				<nav id="nav_menu-4" class="sidebar otherlinks widget_nav_menu">
 					<h2>Sidebar Secondary Links</h2>
 					<div id="menu-location-" class="menu-sidebar-secondary-links-container">
@@ -32,15 +32,16 @@
 							<?php //check if admin view 
 								if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {										
 								}else{
+									echo "<li><a href = ".URL."SOEInfoHubadmin/dashboard style='font-size:1.5em'>
+									Dashboard</a></li>";
 									echo "<li><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
 									Make changes to this Event</a></li>";
 								}
 							?>
 							
-						
+							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events.</a></li>
 							<li style=" padding:1.25em;">
 								
-
 								<?php $url = 'https:'.URL;
 									$title= $announcement->announcement_Title;
 									echo '<a class="facebook-share-button" href="https://www.facebook.com/sharer.php?u='.urlencode($url).'&t='.urlencode($title).'" target="_blank">Share it in facebook</a>';

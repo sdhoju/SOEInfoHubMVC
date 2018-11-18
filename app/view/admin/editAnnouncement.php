@@ -22,7 +22,7 @@
 							<tr><td>Contact Email <span class="asterisk">*</span></td><tr></tr><td><input type="email" name ="email[]" value=<?php echo $submitter->email;?>  required/></td></tr>
 							<tr><td>Contact Phone  </td><tr></tr><td><input type = text name ="phone[]" value= <?php echo $submitter->phone;?>  ></td></tr>
 							<tr>
-								<td>Organization  </td><tr></tr><td><input type = text name ='S_Organization[]' value=<?php echo $submitter->S_organization;?> ></td>
+								<td>Organization  </td><tr></tr><td><input type = text name ='S_Organization[]' value="<?php echo $submitter->S_organization;?>" ></td>
 							</tr>
 							<tr><td colspan="2"><hr/></td></tr>
 						</tbody>
