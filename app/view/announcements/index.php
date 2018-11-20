@@ -10,16 +10,26 @@
 					echo 'No events at the moment.
 					</div>';
 
-				}
+				}	
+		
 				foreach ($announcements as $row)  {
 					echo '<div class="announcement-post">';
 						echo'<div id="attachment_377" class="wp-caption alignleft">';
 							
-								$images = explode(',,,', $row->attachments);
-								if (empty($images[0])){
-									$images[0]='placeholder.jpg';
+								$images = $row->attachments;
+								if (empty($images)){
+									$images='placeholder.jpg';
+								}else{
+									$file_ext= explode('.',$images);
+									$file_ext=strtolower(end($file_ext));
+									$extensions= array("jpeg","jpg","png");
+									
+									if(in_array($file_ext,$extensions) === false){
+										$images='placeholder.jpg';
+									}
 								}
-							echo'<img class="announcement-post-image-header" src="'.URL."uploads/".$images[0].'" alt="'.$row->announcement_Title.'">';
+							
+							echo'<img class="announcement-post-image-header" src="'.URL."uploads/".$images.'" alt="'.$row->announcement_Title.'">';
 						
 						echo'</div>';//end of attachment_377
 						echo'<div id="myModal" class="modal">
@@ -62,21 +72,22 @@
 
 								} 
 							echo' </div>';//end of contact
-							echo '<div class="recommended" style=" padding-bottom:20px;">';
+							echo '<div class="recommended" style=" padding-bottom:20px; margin-left:5px">';
 							echo'<b>Recommended for:</b><br>';
 
-								$contact_Names = explode(',,,', $row->contact_Names);
-								$emails = explode(',,,', $row->emails);
-								$phones = explode(',,,', $row->phones);
-								// echo ($row->contact_Names);
-								for ($x = 0; $x <sizeof($contact_Names); $x++) {
-									echo '<div class="contact-display" style="padding-bottom:10px;">';
-										echo $contact_Names[$x].'<br>';
-										echo'<a href="mailto:'.$emails[$x].'?Subject='. htmlspecialchars($row->announcement_Title, ENT_QUOTES, 'UTF-8').'" target="_blank">'.$emails[$x].'</a><br>';
-										if ($phones[$x]) echo'<a href="tel:'.$phones[$x].'" >'.$phones[$x].'</a><br>';
-									echo' </div>';//end of contact-display
+								$majors = explode(',', $row->major_IDs);
+								// print_r($majors);
 
-								} 
+								foreach($majors as $major){
+									foreach($all_majors as $major_detail){
+										if($major == $major_detail->major_ID){
+													echo $major_detail->major_Name.", ";
+												}
+									}
+								// 	
+
+								}
+							
 							echo' </div>';
 							echo' </div>';
 

@@ -22,10 +22,11 @@ class Model
                                start_day,start_time,end_day,end_time, external_link,
                                 group_Concat(DISTINCT  Contact_Name SEPARATOR ',,,') as contact_Names, group_Concat(email SEPARATOR ',,,')as emails ,
                                 group_Concat(  phone SEPARATOR ',,,') as phones,group_Concat(  S_organization SEPARATOR ',,,') as orgs,
-                                group_Concat(file_name SEPARATOR ',,,') as attachments
-                                from (announcement natural join submitter)
+                                file_name  as attachments,
+                                group_Concat(DISTINCT major_ID SEPARATOR ',') as major_IDs
+                                from (announcement natural join submitter natural join announceMajor)
                                 left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID 
-                                where Published =1 and start_day >= '$today'
+                                where Published =1 and start_day >= '$today' 
                                 group by announcement.announcement_ID order by start_day ;
                                 ";
                                 //limit 10

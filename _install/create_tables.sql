@@ -67,7 +67,7 @@ CREATE TABLE announcementFile(
     file_ID Int(10) Not Null AUTO_INCREMENT,
     announcement_ID	Int(20) NOT NULL,
    	file_name VARCHAR(200),
-    file_type VARCHAR(10),
+    file_type VARCHAR(50),
     PRIMARY KEY(file_ID),
     FOREIGN KEY (announcement_ID) REFERENCES announcement(announcement_ID)
 );

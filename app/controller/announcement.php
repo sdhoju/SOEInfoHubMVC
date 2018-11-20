@@ -9,6 +9,8 @@ class Announcement extends Controller
      */
     public function index()
     {
+        $all_majors=$this->model->getAllMajor();
+        
         $announcements = $this->model->getAllAnnouncements();    
         require APP . 'view/_templates/header.php';
         require APP . 'view/announcements/index.php';
@@ -18,7 +20,6 @@ class Announcement extends Controller
     public function getAnnouncementByID($announcement_ID)
     {   
       
-
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
         if( $announcement->published==0){
             if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"]) ) {
@@ -82,7 +83,7 @@ class Announcement extends Controller
                 $extensions= array("jpeg","jpg","png","pdf");
                 if(in_array($file_ext,$extensions) === false){
                     $errors[]="extension not allowed, please choose a JPEG,JPG,PNG or PDF file.";
-                    $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n".$file_ext." khdsa";
+                    $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n";
                 }
                 
                 if($file_size > 5242880){
@@ -102,7 +103,8 @@ class Announcement extends Controller
         if (isset($_POST["submit_announcement"])) {
             
             //File meets the requirement of being image or pdf file smaller than 5MB
-            if(checkfile()){
+            if(checkfile() || empty($_FILES['attachments']['name'][0] )){
+                echo !isset($_FILES);
 
                 $file_names = $_FILES['attachments']['name'];
                 $file_types  = $_FILES['attachments']['type'];
