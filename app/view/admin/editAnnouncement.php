@@ -43,46 +43,15 @@
 						<tr><td>Start Date (mm-dd-yy) <span class="asterisk">*</span> </td><td><input type ='text' name ='start_day' id="dateStart" value="<?php echo htmlspecialchars($announcement->start_day, ENT_QUOTES, 'UTF-8'); ?>" required/></td></tr>
 						<tr><td>Start Time <span class="asterisk">*</span></td>
 						<td>
-							<select name="start_time" style="color: black;">
-								<?php 
-									$s=0;
-									for($hours=0; $hours<24; $hours++) 
-									for($mins=0; $mins<60; $mins+=15) 
-										if ($hours==0){
-											echo "<option value=$hours:$mins:$s>".str_pad(12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." AM</option>";
-										}elseif ($hours>12){
-											if ($hours.":".$mins.":".$s ==  $announcement->start_time )
-												echo "<option value=$hours:$mins:$s selected='selected'>".str_pad($hours-12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." PM</option>";
-											else echo "<option value=$hours:$mins:$s >".str_pad($hours-12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." PM</option>";
-
-										}else{
-											echo "<option value=$hours:$mins:$s >".str_pad($hours,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." AM</option>";
-										}
-								?>
-							</select>
-
+						<input type = text name ='start_time' value="<?php echo htmlspecialchars($announcement->start_time, ENT_QUOTES, 'UTF-8'); ?>" required /> 
+		
 						</td></tr>
 						<tr><td>End Date (mm-dd-yy) <span class="asterisk">*</span></td> <td><input type = text name ='end_day' id="dateEnd" value="<?php echo htmlspecialchars($announcement->end_day, ENT_QUOTES, 'UTF-8'); ?>"></td></tr>
 						<tr>
 						<td>End Time <span class="asterisk">*</span></td>
 						<td>
-							<select name="end_time" style="color: black;">
-							<?php 
+						<input type = text name ='end_time' value="<?php echo htmlspecialchars($announcement->end_time, ENT_QUOTES, 'UTF-8'); ?>" required /> 
 
-								for($hours=0; $hours<24; $hours++) // the interval for hours is '1'
-									for($mins=0; $mins<60; $mins+=15) // the interval for mins is '15'
-										if ($hours==0){
-											echo "<option value=$hours:$mins:$s>".str_pad(12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." AM</option>";
-										}elseif ($hours>12 ){
-										 if ($hours.":".$mins.":".$s == $announcement->end_time )
-												echo "<option value=$hours:$mins:$s selected='selected'>".str_pad($hours-12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." PM</option>";
-											else echo "<option value=$hours:$mins:$s >".str_pad($hours-12,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." PM</option>";
-										}else{
-											echo "<option value=$hours:$mins:$s >".str_pad($hours,2,'0',STR_PAD_LEFT).':'.str_pad($mins,2,'0',STR_PAD_LEFT)." AM</option>";
-
-										}
-							?>
-							</select>
 						</td></tr>
 						<!-- <tr><td>Time <span class="asterisk">*</span> </td><tr></tr><td><input type = text name ='announcement_time' value='' required/></td></tr> -->
 						<tr><td colspan="2"><hr/></td></tr>
@@ -106,10 +75,10 @@
 						<tr><td colspan="2"><hr/></td></tr>
 
 					</tbody>
-
+					<tr><td >External link (if any) :</td><tr></tr><td colspan="2" style="padding-bottom:2em;"><input type = text name ='external_link'  value="<?php echo htmlspecialchars($announcement->external_link, ENT_QUOTES, 'UTF-8'); ?>"  /> </td></tr>
+						<tr>
 					<tbody class="announcement-attachment">
-					<tr><td >External link (if any) :</td><tr></tr><td colspan="2" style="padding-bottom:2em;"><input type = text name ='external_link' value=''  /> </td></tr>
-						<tr><td>
+					<td>
 							Attachment (must be a pdf, png, or jpeg file): <input type="file"  name="attachments[]" accept="image/png,,image/jpeg,image/jpg,.pdf" multiple>
 						</td>
 						<td><button class="add-new-attachment" onClick="addAnother('announcement-attachment','add-new-attachment');">Add Another</button></td>

@@ -97,10 +97,13 @@ class SOEInfoHubAdmin extends Controller
             $result = $this->admin->togglePublish($announcement_ID);
             if($result==1){
                 $_SESSION["message"] = "Publish Status has been changed";
-                $published_status = $this->admin->getPublishStatus($announcement_ID);
-                // if($published_status->published==1); {
-                //     $this->EmailtoAll($announcement_ID);
-                // }
+                $published_status =(int) $this->admin->getPublishStatus($announcement_ID)->Published;
+                $p= $published_status+1;
+                if( $p==2) {
+                    //have been published 
+                    $this->EmailtoAll($announcement_ID);
+                }
+                
                 header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
             }
             else{
@@ -149,19 +152,20 @@ class SOEInfoHubAdmin extends Controller
             // str($email);
 
             $announcement = $this->model->getAnnouncementByID($announcement_ID);
-            $majors= $this->admin->getAnnounceMajorByID($announcement_ID);
-
+            $majors = $this->admin->getMajors($announcement_ID)->major_ID;
+            
+            $majors = explode(',',$majors);
+            $students=array();
             foreach($majors as $major){
-                $students[] = $this->admin->getStudentsByMajorID($major->major_ID);
+                $students[] = $this->admin->getStudentsEmailByMajorID($major);
             }
 
-            $to=array('name'=>'Soul Shakerrr','email'=>'sdhoju@go.olemiss.edu');
-
+            $to=array();
                 foreach($students as $student){
                     if(sizeof($student)>0){
                         foreach($student as $s)
-                        $to[] = array('name'=> "$s->first_name $s->middle_name $s->last_name ",
-                            'email'=> "$s->email");
+                        $to[] = array(
+                        'email'=> "$s->email");
                     }  
                 } ;
             

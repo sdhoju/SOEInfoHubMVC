@@ -10,7 +10,7 @@ class Announcement extends Controller
     public function index()
     {
         $all_majors=$this->model->getAllMajor();
-        
+        $all_cls =$this->model->getAllClassification();
         $announcements = $this->model->getAllAnnouncements();    
         require APP . 'view/_templates/header.php';
         require APP . 'view/announcements/index.php';
@@ -20,6 +20,8 @@ class Announcement extends Controller
     public function getAnnouncementByID($announcement_ID)
     {   
       
+        $PDFs= $this->model->getPdfByID($announcement_ID);
+        $images = $this->model->getImagesByID($announcement_ID);
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
         if( $announcement->published==0){
             if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"]) ) {
@@ -85,7 +87,6 @@ class Announcement extends Controller
                     $errors[]="extension not allowed, please choose a JPEG,JPG,PNG or PDF file.";
                     $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n";
                 }
-                
                 if($file_size > 5242880){
                     $errors[]='File size must be smaller than 5 MB';
                     $_SESSION["message"] = "File size must be smaller than 5 MB \n";

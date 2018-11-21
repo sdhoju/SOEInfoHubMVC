@@ -96,14 +96,14 @@ class Admin extends Model
 
 
     public function getMajors($announcement_ID){
-        $sql = "SELECT * FROM announceMajor WHERE  announcement_ID = :announcement_ID  ";
+        $sql = "SELECT group_concat(major_ID) as major_ID FROM announceMajor WHERE  announcement_ID = :announcement_ID  group by announcement_ID limit 1;";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
         // fetch() is the PDO method that get exactly one result
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-        return $query->fetchAll();
+        return $query->fetch();
     }
     
     public function getClassifications($announcement_ID){
@@ -166,8 +166,8 @@ class Admin extends Model
     }
     
 
-    public function getStudentsByMajorID($major_ID){
-        $sql ="select * from students where major_ID=:major_ID";
+    public function getStudentsEmailByMajorID($major_ID){
+        $sql ="select email from students where major_ID=:major_ID and subscribed = 1;";
         $query = $this->db->prepare($sql);
         $parameters = array( ':major_ID' => $major_ID    );
         $query->execute($parameters);

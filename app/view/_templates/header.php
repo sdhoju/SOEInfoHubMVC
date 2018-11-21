@@ -9,7 +9,7 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
 
-	<title>School of Engineering &bull; Information Hub</title>
+	<title>School of Engineering Information Hub</title>
 
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' />
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' />
@@ -25,6 +25,8 @@
 
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src='<?php echo URL; ?>_js/imagemodal.js'></script>
+	<script src='<?php echo URL; ?>_js/utilities.js'></script>
    
 
 	<link rel='stylesheet' href='<?php echo URL; ?>custom.css'>

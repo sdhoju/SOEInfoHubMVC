@@ -19,8 +19,10 @@
     font-size: 1.25em!important;
     margin-left: auto;
     float:left;
-    width: 75%;    
+    width: 95%;    
     padding: 2em;
+    min-height: 420px;
+
 }
 .rightsidebar 
 {
@@ -113,7 +115,7 @@
 }
 .announcementform textarea{
     height: 400px;
-    width: 140%;
+    width: 90%;
     border-radius: 4px;
     color: black;
 }
@@ -135,7 +137,6 @@
 }
 .announcement-attachment input[type='file']{
        color:white!important;
-   
 }
 
 .alert-box.info {
@@ -356,7 +357,17 @@ and also iPads specifically.
         padding-bottom: 25px;
 
     }
-    
+    .wp-caption.alignright{
+        min-height: auto;
+        width: 90%;
+        float:none;
+
+    }
+    #myImg {
+        width: 80%;
+        margin-left: 0;
+        height: auto;
+    }
     .create-announcement-form {
         width: 100%;
         /* overflow: scroll; */
