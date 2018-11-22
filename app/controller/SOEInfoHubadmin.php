@@ -93,24 +93,34 @@ class SOEInfoHubAdmin extends Controller
     }
     
     public function publish($announcement_ID){
-        if(isset($_POST["publish_announcement"])) {
-            $result = $this->admin->togglePublish($announcement_ID);
-            if($result==1){
-                $_SESSION["message"] = "Publish Status has been changed";
-                $published_status =(int) $this->admin->getPublishStatus($announcement_ID)->Published;
-                $p= $published_status+1;
-                if( $p==2) {
-                    //have been published 
-                    $this->EmailtoAll($announcement_ID);
-                }
-                
-                header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
-            }
-            else{
-                $_SESSION["message"] = "Announcement wasn't Published";
-                header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
-            }
 
+        if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
+            $_SESSION["message"] = "Admin ";
+            header('location: ' . URL.'SOEInfoHubadmin/index' );
+        }else
+        {
+
+            if(isset($_POST["publish_announcement"])) {
+                $result = $this->admin->togglePublish($announcement_ID);
+                if($result==1){
+                    $_SESSION["message"] = "Publish Status has been changed";
+                    $published_status =(int) $this->admin->getPublishStatus($announcement_ID)->Published;
+
+                    $p= $published_status+1;
+                    if( $p==2) {
+                        //have been published 
+                        
+                        $this->EmailtoAll($announcement_ID);
+                    }
+                    
+                    header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
+                }
+                else{
+                    $_SESSION["message"] = "Announcement wasn't Published";
+                    header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
+                }
+
+            }
         }
     }
     
@@ -153,22 +163,29 @@ class SOEInfoHubAdmin extends Controller
 
             $announcement = $this->model->getAnnouncementByID($announcement_ID);
             $majors = $this->admin->getMajors($announcement_ID)->major_ID;
-            
+            $classifications = $this->admin->getClassifications($announcement_ID)->cls_ID;
+            // print_r($classifications); exit();
+
             $majors = explode(',',$majors);
+            $classifications = explode(',',$classifications);
+
+
             $students=array();
             foreach($majors as $major){
-                $students[] = $this->admin->getStudentsEmailByMajorID($major);
+                $students[] = $this->admin->getTargetedStudentsEmail($major,$classifications);
             }
+
+            // print_r($students );exit();
 
             $to=array();
                 foreach($students as $student){
                     if(sizeof($student)>0){
                         foreach($student as $s)
-                        $to[] = array(
+                        $to[] = array( 
+                        'name' =>"$s->first_name ".    "$s->middle_name "."$s->last_name",
                         'email'=> "$s->email");
                     }  
                 } ;
-            
             // print_r($to );exit();
 
 

@@ -96,7 +96,7 @@ class Admin extends Model
 
 
     public function getMajors($announcement_ID){
-        $sql = "SELECT group_concat(major_ID) as major_ID FROM announceMajor WHERE  announcement_ID = :announcement_ID  group by announcement_ID limit 1;";
+        $sql = "SELECT group_concat(DISTINCT major_ID) as major_ID FROM announceMajor WHERE  announcement_ID = :announcement_ID  group by announcement_ID limit 1;";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
@@ -107,14 +107,14 @@ class Admin extends Model
     }
     
     public function getClassifications($announcement_ID){
-        $sql = "SELECT * FROM announceCls WHERE  announcement_ID = :announcement_ID";
+        $sql = "SELECT group_concat(DISTINCT cls_ID) as cls_ID FROM announceCls WHERE  announcement_ID = :announcement_ID  group by announcement_ID limit 1;";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
         // fetch() is the PDO method that get exactly one result
         // useful for debugging: you can see the SQL behind above construction by using:
         // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-        return $query->fetchAll();
+        return $query->fetch();
     }
     
     
@@ -166,11 +166,40 @@ class Admin extends Model
     }
     
 
-    public function getStudentsEmailByMajorID($major_ID){
-        $sql ="select email from students where major_ID=:major_ID and subscribed = 1;";
+    public function getTargetedStudentsEmail($major_ID,$classifications){
+        $fr = " (hours_earned >0 and hours_earned <30) ";
+        $so = " (hours_earned >=30 and hours_earned <60) ";
+        $ju = " (hours_earned >=60 and hours_earned <90) ";
+        $se = " (hours_earned >=90) ";
+        $other = "(hours_earned = -1) ";
+
+        $clsCon='  and (';
+        $count=sizeof($classifications);
+        foreach($classifications as $cls){
+            if ($cls==1)
+                $clsCon.=$fr;
+            elseif($cls==2)
+                $clsCon.=$so;
+            elseif($cls==3)
+                $clsCon.=$ju;
+            elseif($cls==4)
+                $clsCon.=$se;
+            elseif($cls==5)
+                $clsCon.=$other;
+            $count= $count-1;    
+            if($count >1 ){
+                $clsCon.=' OR ';
+            }    
+        }
+        $clsCon.=' )';
+
+        $sql ="select first_name,middle_name,last_name, email from students where major_ID=:major_ID and  subscribed = 1 $clsCon ;";
         $query = $this->db->prepare($sql);
-        $parameters = array( ':major_ID' => $major_ID    );
+        $parameters = array( ':major_ID' => $major_ID );
         $query->execute($parameters);
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+
         return $query->fetchAll();
 
     }
