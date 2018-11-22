@@ -49,6 +49,19 @@ class Announcement extends Controller
       
 
     }
+
+        public function subscribe()
+        { 
+            if (isset($_POST["subscribe"])) {
+
+                $_SESSION["message"] = "You have been added to the list";
+            }
+            require APP . 'view/_templates/fbheader.php';
+            require APP . 'view/email/subscribe.php';
+            require APP . 'view/_templates/footer.php';
+        }
+
+
         public function shareInFacebook($announcement_ID)
         {
         // if we have an id of a song that should be deleted
@@ -235,7 +248,7 @@ class Announcement extends Controller
 
             //This is the most important coding.
             header("Content-Type: text/Calendar");
-            header("Content-Disposition: inline; filename=".htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8').".ics");
+            header("Content-Disposition: inline; filename=invite.ics");
             echo "BEGIN:VCALENDAR\n";
             echo "PRODID:-//Microsoft Corporation//Outlook 12.0 MIMEDIR//EN\n";
             echo "VERSION:2.0\n";

@@ -135,14 +135,15 @@
 		 <span id="loadmore" num_loaded="10">Load More</span>
 
 		<div class="rightsidebar">
-			<nav id="nav_menu-4" class="sidebar otherlinks widget_nav_menu">
+			<nav id="nav_menu-1" class="sidebar otherlinks widget_nav_menu">
 					<h2>Sidebar Secondary Links</h2>
-					<div id="menu-location-" class="menu-sidebar-secondary-links-container">
+					<div id="menu-location-" class="menu-sidebar-primary-links-container">
 						<ol style="list-style-type: none;">
-							<li style=" padding:1.25em; font-size:1.25em;">
-								<a href="<?php echo URL;?>announcement/Form">Submit form</a><br>
+							<li style="  font-size:1.25em;">
+								<a href="<?php echo URL;?>announcement/Form">Submit an announcement</a><br>
+								<a href="<?php echo URL;?>announcement/subscribe">Join our email list</a><br>
 							</li>
-							<li style=" padding:1.25em; font-size:1.25em;">
+							<li style=" font-size:1.25em;">
 								<a href="<?php echo URL;?>SOEInfoHubadmin">Login</a>
 							</li>
 

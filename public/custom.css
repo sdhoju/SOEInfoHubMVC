@@ -138,6 +138,44 @@
 .announcement-attachment input[type='file']{
        color:white!important;
 }
+.container-card.subscribe{
+    background-color:#14213D;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+
+}
+.subscribe table{
+    width: 100%;
+    font-size: 1.25em;
+    color: #FFFFFF;
+}
+.subscribe ::placeholder { 
+    color: whitesmoke;
+    opacity: 1; /* Firefox */
+    font-size: 1.35em;
+}
+
+
+.subscribe input[type='text'], .subscribe input[type='email'] {
+    width: 100%;
+    background-color: #0079a1;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    outline: none;
+    padding-left: 25px;
+}
+
+.subscribe .button{
+    /* height: 2.5em; */
+    background-color:floralwhite !important;
+    color: black !important;
+    text-align: center;
+    font-size:1.65em;
+    padding: 10px;
+}
 
 .alert-box.info {
     /* background-color: #a0d3e8; */
