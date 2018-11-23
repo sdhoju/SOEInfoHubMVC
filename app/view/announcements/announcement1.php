@@ -13,8 +13,8 @@
 						foreach($images as $image){
 							$all_images[]=$image->file_name;
 						}
-						if (empty($all_images)){
-							$all_images[]='placeholder.jpg';
+						if (empty($all_images[0])){
+							$all_images[0]='placeholder.jpg';
 						}
 
 						foreach($PDFs as $pdf){
@@ -91,9 +91,9 @@
 
 									echo "<a href='https://calendar.google.com/calendar/r/eventedit?
 											text=".  htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8')."&
-											dates=". urlencode($start_day)."/". urlencode($end_day)."&
+											dates=". urlencode($start_day)."T".$start_time."/". urlencode($end_day)."T".$end_time."&
 											details=".  htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8')."&
-											location=". urlencode($announcement->announcement_Location)."' target='_blank'>Add to gCal</a>";?>
+											location=". urlencode($announcement->announcement_Location)."' target='_blank'>+ Google Calendar</a>";?>
 
 								<?php echo "<a href = ".URL . 'announcement/getISC/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8').">Calendar isc</a>";?>
 

@@ -245,7 +245,10 @@ class Announcement extends Controller
 
     public function getISC($announcement_ID){
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
-
+            $start_day =  str_replace("-", "", $announcement->start_day);
+            $end_day =  str_replace("-", "", $announcement->end_day);
+            $start_time =  str_replace(":", "", $announcement->start_time);
+            $end_time =  str_replace(":", "", $announcement->end_time);
             //This is the most important coding.
             header("Content-Type: text/Calendar");
             header("Content-Disposition: inline; filename=invite.ics");
@@ -258,9 +261,9 @@ class Announcement extends Controller
             echo "CLASS:PUBLIC\n";
             echo "CREATED:$announcement->created_at\n";
             echo "DESCRIPTION:".htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8')."\n.";
-            echo "DTEND:$announcement->end_day\n";
-            echo "DTSTAMP:20091109T093305Z\n";
-            echo "DTSTART:$announcement->start_day\n";
+            echo "DTSTAMP:20091109T093305\n";
+            echo "DTSTART:".$start_day."T".$start_time."\n";
+            echo "DTEND:".$end_day."T".$end_time."\n";
             echo "LAST-MODIFIED:20091109T101015Z\n";
             echo "LOCATION:$announcement->announcement_Location\n";
             echo "PRIORITY:5\n";

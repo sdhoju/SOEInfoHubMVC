@@ -110,7 +110,7 @@ class SOEInfoHubAdmin extends Controller
                     if( $p==2) {
                         //have been published 
                         
-                        $this->EmailtoAll($announcement_ID);
+                        // $this->EmailtoAll($announcement_ID);
                     }
                     
                     header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
