@@ -23,8 +23,10 @@ class Model
                                 group_Concat(DISTINCT  Contact_Name SEPARATOR ',,,') as contact_Names, group_Concat(email SEPARATOR ',,,')as emails ,
                                 group_Concat(  phone SEPARATOR ',,,') as phones,group_Concat(  S_organization SEPARATOR ',,,') as orgs,
                                 file_name  as attachments,
-                                group_Concat(DISTINCT major_ID SEPARATOR ',') as major_IDs
-                                from (announcement natural join submitter natural join announceMajor)
+                                group_Concat(DISTINCT major_ID SEPARATOR ',') as major_IDs,
+                                group_Concat(DISTINCT cls_ID SEPARATOR ',') as cls_IDs
+
+                                from (announcement natural join submitter natural join announceMajor natural join announceCls)
                                 left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID 
                                 where Published =1 and start_day >= '$today' 
                                 group by announcement.announcement_ID order by start_day ;

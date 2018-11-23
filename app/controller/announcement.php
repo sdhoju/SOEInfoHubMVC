@@ -10,7 +10,7 @@ class Announcement extends Controller
     public function index()
     {
         $all_majors=$this->model->getAllMajor();
-        
+        $all_cls =$this->model->getAllClassification();
         $announcements = $this->model->getAllAnnouncements();    
         require APP . 'view/_templates/header.php';
         require APP . 'view/announcements/index.php';

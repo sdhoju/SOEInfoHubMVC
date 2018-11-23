@@ -113,7 +113,7 @@
 }
 .announcementform textarea{
     height: 400px;
-    width: 140%;
+    width: 90%;
     border-radius: 4px;
     color: black;
 }
@@ -135,7 +135,6 @@
 }
 .announcement-attachment input[type='file']{
        color:white!important;
-   
 }
 
 .alert-box.info {
