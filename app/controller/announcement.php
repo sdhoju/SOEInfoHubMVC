@@ -19,15 +19,19 @@ class Announcement extends Controller
 
     public function getAnnouncementByID($announcement_ID)
     {   
-      
         $PDFs= $this->model->getPdfByID($announcement_ID);
         $images = $this->model->getImagesByID($announcement_ID);
+        $contacts=$this->model->getContactsByID($announcement_ID);
+        $majors=$this->model->getMajorsByID($announcement_ID);
+        $classifications =$this->model->getClassificationsByID($announcement_ID);
+
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
         if( $announcement->published==0){
             if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"]) ) {
                 header('location: ' . URL . 'problem');
             }else{
                 if(!empty($announcement)){
+                   
                     $text = urldecode($announcement->announcement_Text);
                     $title = urldecode($announcement->announcement_Title);
                     require APP . 'view/_templates/fbheader.php';
@@ -118,7 +122,7 @@ class Announcement extends Controller
             
             //File meets the requirement of being image or pdf file smaller than 5MB
             if(checkfile() || empty($_FILES['attachments']['name'][0] )){
-                echo !isset($_FILES);
+                // echo !isset($_FILES);
 
                 $file_names = $_FILES['attachments']['name'];
                 $file_types  = $_FILES['attachments']['type'];

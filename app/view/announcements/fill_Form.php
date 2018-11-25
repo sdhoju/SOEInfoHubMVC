@@ -35,8 +35,8 @@
 
 					<tbody class="announce-info">
 						<tr><td>Lets talk about the event.</td></tr>
-						<tr><td>Event's Title <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Title' value='' required /> </td></tr>
-						<tr><td >Event's Description <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><textarea   name ='announcement_Text' value=''required> </textarea></td></tr>
+						<tr><td>Event's Title <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Title' value='' required /></td></tr>
+						<tr><td >Event's Description <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><textarea   name ='announcement_Text' value=''required></textarea></td></tr>
 						<tr><td>Location <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Location' value='' required/></td></tr>
 
 						<tr><td>Start Date (mm-dd-yy) <span class="asterisk">*</span> </td><td><input type = text name ='start_day' id="dateStart" required/></td></tr>

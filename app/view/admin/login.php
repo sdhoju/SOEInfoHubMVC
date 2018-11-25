@@ -1,7 +1,6 @@
 <div  id="secmid">
 	<div  id="innercontent">
 	<center> <a href="<?php echo URL;?>" style="  font-size:2em; ">Back to feed page</a>            </center>
-
 					<div class="card">
 					<?php 
 								if (($output = message()) !== null) {
