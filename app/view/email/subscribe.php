@@ -4,7 +4,8 @@
            
         <center> <a href="<?php echo URL;?>" style="  font-size:2em; ">Back to feed page</a>            </center>
 
-
+<?php                   
+?>
             <div class="card">
                 <div class="container-card subscribe">
                 <p style="color:white; ">
@@ -17,7 +18,9 @@
                         echo $output;
                         $output=null;
                     }
+
                 ?>
+
                 <form action='<?php echo URL;?>announcement/subscribe' method="post">
                     
                     <table class="subscribe"> 

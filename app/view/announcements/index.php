@@ -136,7 +136,58 @@
 			?>
 		</div> <!-- end of  announcement-items-->
 		 <span id="loadmore" num_loaded="10">Load More</span>
+		 <div id="myNav" class="overlay">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<div class="overlay-content">
+				<div class="card">
+					<div class="container-card subscribe">
+					<p style="color:white; ">
+							We send out the announcement of events on the campus. 
+							You can get involded by subscribing.
 
+						</p>
+					<?php 
+						if (($output = message()) !== null) {
+							echo $output;
+							$output=null;
+						}
+
+					?>
+					<form action='<?php echo URL;?>announcement/subscribe' method="post">
+						<table class="subscribe"> 
+							<tbody class="subscribe tbody">
+								<tr>
+								<td><input type="text" name="first_name"  placeholder="First Name" required></td> 
+								</tr>
+								<tr>
+								<td><input type="text" name="middle_name" placeholder="Middle Name" ></td> 
+								</tr>
+								<tr>
+								<td> <input type="text" name="last_name" placeholder="Last Name" required></td> 
+								</tr>
+								<tr>
+								<td> <input type="email" name="email"  placeholder="Email Address" required></td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<input type="submit" name="subscribe" value="Subscribe" class="button" style="border-radius:10px;"/>
+						<a href="<?php echo URL;?>" style="color:white; font-size:1.5em;">Go back</a>
+					</form>
+
+					</div>
+				</div>
+			</div>
+			</div>
+					<script>
+						function openNav() {
+						document.getElementById("myNav").style.display = "block";
+						}
+
+						function closeNav() {
+						document.getElementById("myNav").style.display = "none";
+						}
+					</script>
 		<div class="rightsidebar">
 			<nav id="nav_menu-1" class="sidebar otherlinks widget_nav_menu">
 					<h2>Sidebar Secondary Links</h2>
@@ -144,7 +195,9 @@
 						<ol style="list-style-type: none;">
 							<li style="  font-size:1.25em;">
 								<a href="<?php echo URL;?>announcement/Form">Submit an announcement</a><br>
-								<a href="<?php echo URL;?>announcement/subscribe">Join our email list</a><br>
+								<a  onclick="openNav()"> Join our email list</a>
+
+								<!-- <a href="<?php echo URL;?>announcement/subscribe">Join our email list</a><br> -->
 							</li>
 							<li style=" font-size:1.25em;">
 								<a href="<?php echo URL;?>SOEInfoHubadmin">Login</a>

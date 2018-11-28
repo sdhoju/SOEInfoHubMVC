@@ -162,7 +162,7 @@ class Model
     public function getAnnouncementByID($announcement_ID)
     {
         //published =1 AND
-        $sql = "SELECT * FROM announcement WHERE   announcement_ID = :announcement_ID  LIMIT 1 ";
+        $sql = "SELECT * FROM announcement WHERE announcement_ID = :announcement_ID  LIMIT 1 ";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
@@ -239,6 +239,62 @@ class Model
     }
 
 
+    public function Emailexist($email){
+        $sql = "SELECT email FROM subscribers where email = :email";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':email' => $email);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        if ($query->rowCount()>0) return true;
+        else return false;
+    }
 
+
+    public function addSubscriber($first_name,$middle_name='',$last_name,$email)
+    {
+        $ID= uniqid(rand(), true);
+        $sql= "Insert into subscribers (ID,first_name,middle_name,last_name,email,major_ID,hours_earned,subscribed) 
+                values(:ID,:first_name,:middle_name,:last_name,:email,10,-1,1);";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':ID' => $ID,
+                           ':first_name'=> $first_name,
+                           ':middle_name'=> $middle_name,
+                           ':last_name'=> $last_name,
+                           ':email'=> $email
+                        );
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        // return $query->fetch();
     
+    }
+    
+    public function getSubscriberID($email)
+    {
+        $sql = "SELECT ID FROM subscribers where email = :email";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':email' => $email);
+        $query->execute($parameters);
+        return $query->fetch();
+    }
+
+    public function unsubscribe($ID)
+    {
+        $sql = "update subscribers set subscribed = 0 where ID =:ID ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':ID' => $ID);
+        $query->execute($parameters);
+    }
+
+
+    public function resubscribe($ID)
+    {
+        $sql = "update subscribers set subscribed = 1 where ID =:ID ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':ID' => $ID);
+        $query->execute($parameters);
+    }
 }

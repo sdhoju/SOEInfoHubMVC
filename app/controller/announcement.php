@@ -54,26 +54,6 @@ class Announcement extends Controller
 
     }
 
-        public function subscribe()
-        { 
-            if (isset($_POST["subscribe"])) {
-
-                $_SESSION["message"] = "You have been added to the list";
-            }
-            require APP . 'view/_templates/fbheader.php';
-            require APP . 'view/email/subscribe.php';
-            require APP . 'view/_templates/footer.php';
-        }
-
-
-        public function shareInFacebook($announcement_ID)
-        {
-        // if we have an id of a song that should be deleted
-        if (isset($announcement_ID)) {
-            // do deleteSong() in model/model.php
-            $this->model->deleteSong($song_id);
-        }
-    }
 
     public function Form()
     {
@@ -182,6 +162,71 @@ class Announcement extends Controller
     }
 
      
+    public function subscribe()
+    { 
+        if (isset($_POST["subscribe"])) {
+            if (!$this->model->Emailexist( $_POST['email']) ){
+                $this->model->addSubscriber(
+                    $_POST['first_name'],
+                    $_POST['middle_name'],
+                    $_POST['last_name'],
+                    $_POST['email'] );
+            }else{
+                $secret = $this->model->getSubscriberID($_POST['email'])->ID;
+                $this->model->resubscribe($secret );
+            }  
+            $_SESSION["message"] = "You have been added to the list";
+        }
+        header('location: ' . URL );
+
+        // require APP . 'view/_templates/fbheader.php';
+        // require APP . 'view/email/subscribe.php';
+        // require APP . 'view/_templates/footer.php';
+    }
+
+    public function unsubscribe(){
+        if (isset($_POST["unsubscribe"])) {
+            $email=$_POST['email'];
+            // str($email);
+            $secret = $this->model->getSubscriberID($email)->ID;
+
+            $url='https:'.URL.'announcement/un/'.$secret;
+            $to=array();
+            $to[]=array('email'=> "$email", 'name'=>'');
+
+            $subject='Link to unsubscribe from School of Engineering Information Hub';
+            $html='<br>';
+            $html.=$url;
+
+            $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+    
+            $newMailer = new Mailer(true);
+            $newMailer->mail($to,$subject,$html,$from);
+        }
+        require APP . 'view/_templates/fbheader.php';
+        require APP . 'view/email/unsubscribe.php';
+        require APP . 'view/_templates/footer.php';
+    }
+
+    public function un($secret){
+        $this->model->unsubscribe($secret);
+        echo'<div  id="secmid">
+            <div  id="innercontent"><br><br><center><h1>
+            You have been unsubscribed from the list.</h1></center>
+            </div></div>
+            ';
+    }
+
+
+
+    public function shareInFacebook($announcement_ID)
+    {
+    // if we have an id of a song that should be deleted
+    if (isset($announcement_ID)) {
+        // do deleteSong() in model/model.php
+        $this->model->deleteSong($song_id);
+    }
+}
 
 
     public function submitEmail($names,$emails,$announcement_Title){

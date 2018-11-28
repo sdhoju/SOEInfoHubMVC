@@ -4,9 +4,7 @@ class SOEInfoHubAdmin extends Controller
     //View Function
     public function index()
     {
-        // load views
- 
-
+        
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
             require APP . 'view/_templates/header.php';
             require APP . 'view/admin/login.php';
@@ -27,7 +25,6 @@ class SOEInfoHubAdmin extends Controller
             $username = $_POST["username"];
             $password = $_POST["password"];
             $login = $this->admin->getUserByUsername($username);
-            // print_r($login);
 
             if(password_check($password,$login->password))
             {
@@ -44,8 +41,7 @@ class SOEInfoHubAdmin extends Controller
 			
 			else {
 			  $_SESSION["message"] = "Username/Password don't match";
-            //   echo 'to login';
-            header('location: ' . URL.'SOEInfoHubadmin/index' );
+              header('location: ' . URL.'SOEInfoHubadmin/index' );
 
             }
             
@@ -56,7 +52,7 @@ class SOEInfoHubAdmin extends Controller
     public function dashboard()
     {
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
-            $_SESSION["message"] = "Admin ";
+            $_SESSION["message"] = "Invalid user ";
             header('location: ' . URL.'SOEInfoHubadmin/index' );
         }else{
             $announcements = $this->admin->getAllAnnouncements();
@@ -185,8 +181,7 @@ class SOEInfoHubAdmin extends Controller
                     $p= $published_status+1;
                     if( $p==2) {
                         //have been published 
-                        
-                        // $this->EmailtoAll($announcement_ID);
+                        $this->EmailtoAll($announcement_ID);
                     }
                     
                     header('location: ' . URL.'SOEInfoHubadmin/dashboard' );          
@@ -239,23 +234,24 @@ class SOEInfoHubAdmin extends Controller
 
     
      public function EmailtoAll($announcement_ID){
-            // str($email);
 
             $announcement = $this->model->getAnnouncementByID($announcement_ID);
             $majors = $this->admin->getMajors($announcement_ID)->major_ID;
             $classifications = $this->admin->getClassifications($announcement_ID)->cls_ID;
-            // print_r($classifications); exit();
-
+            $image = $this->admin->getAttachmentsByID($announcement_ID);
+            if(empty($image))
+                $image='placeholder.jpg';
+            else
+                $image=$image->file_name;
             $majors = explode(',',$majors);
             $classifications = explode(',',$classifications);
 
 
             $students=array();
             foreach($majors as $major){
-                $students[] = $this->admin->getTargetedStudentsEmail($major,$classifications);
+                $students[] = $this->admin->getTargetedSubscribersEmail($major,$classifications);
             }
 
-            // print_r($students );exit();
 
             $to=array();
                 foreach($students as $student){
@@ -266,13 +262,14 @@ class SOEInfoHubAdmin extends Controller
                         'email'=> "$s->email");
                     }  
                 } ;
-            // print_r($to );exit();
 
             $subject=$announcement->announcement_Title;
             $html='<h3>'.$announcement->announcement_Title.'</h3>
-                    <img  src="http:'.URL.'public/uploads/'.$announcement->file_name.'" alt="attachment" >		
+                    <a href="'.URL.'announcement/getAnnouncementByID/'.$announcement->announcement_ID.'">View browser</a><br>
+                    <img  style="max-width:720px; max-height:720px" src="http:'.URL.'public/uploads/'.$image.'" alt="attachment" >		
             <p>'. $announcement->announcement_Text.'</p>';
-            // echo $html; exit();
+            $html.='This is a system-generated mail. Please do not reply to this email.
+             <a href="http:'.URL.'announcement/unsubscribe"> Unsubscribe</a>';
             $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
     
             $newMailer = new Mailer(true);

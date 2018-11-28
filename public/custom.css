@@ -159,7 +159,7 @@
 .subscribe ::placeholder { 
     color: whitesmoke;
     opacity: 1; /* Firefox */
-    font-size: 1.35em;
+    /* font-size: 1.35em; */
 }
 
 
@@ -172,6 +172,8 @@
     margin-bottom: 10px;
     outline: none;
     padding-left: 25px;
+    font-size:1.65em;
+
 }
 
 .subscribe .button{
@@ -338,7 +340,7 @@ li.pint {background: url("images/imgs_icon/icons-social-depts-gray.png") no-repe
     width: 480px;
     max-width: 480px;
     text-align: center;
-    margin-left:25%;
+    margin-left:35%;
 }
 
 /* On mouse-over, add a deeper shadow */

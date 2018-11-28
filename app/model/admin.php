@@ -12,12 +12,15 @@ class Admin extends Model
 
     public function getAllAnnouncements()
     {
+        date_default_timezone_set('America/Chicago');
+        $today = date('Y-m-d');
         $sql ="SELECT announcement.announcement_ID as announcement_ID, announcement_Title, announcement_Text, announcement_Location ,
                                  start_day,start_time,end_day,end_time, published, 
                                 group_Concat(DISTINCT  Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(  phone) as phones,group_Concat(  s_organization) as orgs,
                                 group_Concat(file_name) as attachments
                                 from (announcement natural join submitter)
-                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID 
+                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID 
+                                 group by announcement.announcement_ID 
                                 order by published, start_day;
                                 ";
 
@@ -138,35 +141,70 @@ class Admin extends Model
 
     }
     
+    public function getAttachmentsByID($announcement_ID){
+        $sql ="select * from announcementFile where announcement_ID=:announcement_ID and file_type='image/jpeg' limit 1";
+        $query = $this->db->prepare($sql);
+        $parameters = array( ':announcement_ID' => $announcement_ID    );
+        $query->execute($parameters);
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
 
-    public function getTargetedStudentsEmail($major_ID,$classifications){
-        $fr = " (hours_earned >0 and hours_earned <30) ";
+        return $query->fetch();
+
+    }
+
+    public function getTargetedSubscribersEmail($major_ID,$classifications){
+        $fr = " (hours_earned >0 and hours_earned <30)";
         $so = " (hours_earned >=30 and hours_earned <60) ";
         $ju = " (hours_earned >=60 and hours_earned <90) ";
         $se = " (hours_earned >=90) ";
         $other = "(hours_earned = -1) ";
 
         $clsCon='  and (';
-        $count=sizeof($classifications);
+        $count=sizeof($classifications)-1;
         foreach($classifications as $cls){
-            if ($cls==1)
+            if ($cls==1){
                 $clsCon.=$fr;
-            elseif($cls==2)
+                if($count > 0 ){
+                    $clsCon.=' OR ';
+                }  
+            }
+            elseif($cls==2){
                 $clsCon.=$so;
-            elseif($cls==3)
+
+                if($count > 0 ){
+                    $clsCon.=' OR ';
+                }  
+            }
+            elseif($cls==3){
                 $clsCon.=$ju;
-            elseif($cls==4)
+
+                if($count > 0 ){
+                    $clsCon.=' OR ';
+                }  
+            }
+            elseif($cls==4){
                 $clsCon.=$se;
-            elseif($cls==5)
+
+                if($count > 0 ){
+                    $clsCon.=' OR ';
+                }  
+            }
+            elseif($cls==6){
                 $clsCon.=$other;
+
+                if($count > 0 ){
+                    $clsCon.=' OR ';
+                }  
+            }
             $count= $count-1;    
-            if($count >1 ){
-                $clsCon.=' OR ';
-            }    
+
+              
+
         }
         $clsCon.=' )';
 
-        $sql ="select first_name,middle_name,last_name, email from students where major_ID=:major_ID and  subscribed = 1 $clsCon ;";
+        $sql ="select first_name,middle_name,last_name, email from subscribers where major_ID=:major_ID and  subscribed = 1 $clsCon ;";
         $query = $this->db->prepare($sql);
         $parameters = array( ':major_ID' => $major_ID );
         $query->execute($parameters);
