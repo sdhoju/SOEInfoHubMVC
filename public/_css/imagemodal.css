@@ -3,7 +3,7 @@
     /* border-radius: 5px; */
     cursor: pointer;
     transition: 0.3s;
-    width: 50%;
+    width: 65%;
     height: auto;
 }
 #myImg:hover {opacity: 0.9;}

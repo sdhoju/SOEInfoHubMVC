@@ -68,12 +68,12 @@
 							$value = 'Unpublish';
 						} 
 					?>
-						<td style='text-align:center;'><a href = <?php echo URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8'); ?>">EDIT</a></td>
+						<td style='text-align:center;'><a href = <?php echo URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8'); ?>>EDIT</a></td>
 						
 						<td style="text-align:center;">
 							<!-- Publish button -->
 							<form 
-								onsubmit="return confirm('Are you sure you sure you want to change publish status?');"
+								onsubmit="return confirm('When an announcement is published, mass email is sent to subscribers. Are you sure you sure you want to change publish status?');"
 							 action=<?php echo URL.'SOEInfoHubadmin/publish/'.htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8');?> method="post">
 								<input type="submit" value=<?php echo $value; ?> class=<?php echo $class; ?>>
 								<input type="hidden" name="publish_announcement" value="" >

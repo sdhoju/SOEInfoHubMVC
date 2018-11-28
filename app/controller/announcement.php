@@ -188,20 +188,25 @@ class Announcement extends Controller
         if (isset($_POST["unsubscribe"])) {
             $email=$_POST['email'];
             // str($email);
-            $secret = $this->model->getSubscriberID($email)->ID;
+            $secret = $this->model->getSubscriberID($email);
+            if(!empty($secret)){
+                $secret=$secret->ID;
+                $url='https:'.URL.'announcement/un/'.$secret;
+                $to=array();
+                $to[]=array('email'=> "$email", 'name'=>'');
 
-            $url='https:'.URL.'announcement/un/'.$secret;
-            $to=array();
-            $to[]=array('email'=> "$email", 'name'=>'');
+                $subject='Link to unsubscribe from School of Engineering Information Hub';
+                $html='<br>';
+                $html.=$url;
 
-            $subject='Link to unsubscribe from School of Engineering Information Hub';
-            $html='<br>';
-            $html.=$url;
+                $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+        
+                $newMailer = new Mailer(true);
+                $newMailer->mail($to,$subject,$html,$from);
+            }
+            
 
-            $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
-    
-            $newMailer = new Mailer(true);
-            $newMailer->mail($to,$subject,$html,$from);
+            
         }
         require APP . 'view/_templates/fbheader.php';
         require APP . 'view/email/unsubscribe.php';

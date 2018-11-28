@@ -1,10 +1,8 @@
 <div id="secmid">
 	<div  id="innercontent">
-		<div class="announcement">
-				<h3 class='announcement-post-title'>
-					<?php if (isset($announcement->announcement_Title)) echo htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8'); ?>
-				</h3>
-				<div id="attachment" class="wp-caption alignright" style="width:650px">
+		<div class="announcement ">
+				
+				<div id="attachment" class="wp-caption" style="width:80%; margin-left:10%;">
 				<!-- <div id="attachment_377" class="wp-caption alignright"> -->
 					<?php 
 
@@ -20,7 +18,7 @@
 							$all_pdfs[]=$pdf->file_name;
 						}
 					?>
-					<img id="myImg"  class="announcement-post-image-header" src="<?php echo URL.'uploads/'.$all_images[0] ?>" alt=<?php $announcement->announcement_Title ?> >
+					<img id="myImg"  class="announcement announcement-post-image-header" src="<?php echo URL.'uploads/'.$all_images[0] ?>" alt=<?php $announcement->announcement_Title ?> >
 					<?php
 						if (!empty($all_pdfs)){
 							echo'<br>';
@@ -37,18 +35,37 @@
 					<div id="myModal" class="modal">
 							<span class="close">&times;</span>
 							<img class="modal-content" id="img01">
-							<div id="caption">
-							</div>
+							<div id="caption"></div>
 						</div>
 					<script src=<?php echo URL."_js/imagemodal.js" ?>></script>
 					
 				</div>
 			
 
-				<div class="announcement-description">
+				<div class="announcement announcement-description" >
+				<h3 class='announcement-post-title' style="margin-left:10%">
+					<?php if (isset($announcement->announcement_Title)) echo htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8'); ?>
+				</h3>
+					<p><b>Details:</b><br>
 					<?php 
+
+		
 					if (isset($announcement->announcement_Text)) echo htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8'); 
-					echo'</br></br><b>CONTACT:</b><br>';
+
+					echo'</p><b>Location:</b>'.$announcement->announcement_Location.'<br><br>';
+							date_default_timezone_set('America/Chicago');
+							$announcement->start_day = date("F d, Y", strtotime("$announcement->start_day"));
+							$announcement->end_day = date("F d, Y", strtotime("$announcement->end_day"));
+							$announcement->start_time = date("g:i a", strtotime($announcement->start_time));							
+							$announcement->end_time = date("g:i a", strtotime($announcement->end_time));
+							if($announcement->start_day == $announcement->end_day)
+								echo '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_time.'<br>';
+							else							
+								echo '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_day." ".$announcement->end_time.' <br>';
+							
+							
+
+					echo'<br><br><b>CONTACT:</b><br>';
 					for ($x = 0; $x <sizeof($contacts); $x++) {
 						echo '<div class="contact-display" style="padding-bottom:10px;">';
 							echo $contacts[$x]->contact_Name.'<br>';
@@ -57,7 +74,6 @@
 						echo' </div>';//end of contact-display
 
 					} 
-				echo' </div>';//end of contact
 
 				echo'<b>Recommended for:</b><br>';
 							echo '<div class="wrapper-con-rec">';
@@ -88,6 +104,7 @@
 								echo' </div>';
 							
 							echo' </div>';
+					echo' </div>';
 					?>
 				</div>
 			</div>
@@ -98,18 +115,10 @@
 					<div id="menu-location-" class="menu-sidebar-secondary-links-container">
 						<ol style="list-style-type: none;">
 						
-							<?php //check if admin view 
-								if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {										
-								}else{
-									echo "<li><a href = ".URL."SOEInfoHubadmin/dashboard style='font-size:1.5em'>
-									Dashboard</a></li>";
-									echo "<li><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
-									Make changes to this Event</a></li>";
-								}
-							?>
+							
 							
 							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events.</a></li>
-							<li style=" padding:1.25em;">
+							<li style="font-size:1.30em">
 								<?php
 									$url = 'https:'.URL;
 									$title= $announcement->announcement_Title;
@@ -136,6 +145,15 @@
 								<input type='email'  name='email' required /><input type='submit' value='Email to Self/Friend'  name='email_to_friend'/></form>";?>
 						
 							</li>
+							<?php //check if admin view 
+								if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {										
+								}else{
+									echo "<li><a href = ".URL."SOEInfoHubadmin/dashboard style='font-size:1.5em'>
+									Dashboard</a></li>";
+									echo "<li><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, 'UTF-8')." style='font-size:1.5em'>
+										Make changes to this Event</a></li>";
+								}
+							?>
 						</ol>
 					</div>
 				</nav> 

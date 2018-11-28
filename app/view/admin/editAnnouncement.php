@@ -32,7 +32,7 @@
 					<tbody class="announce-info">
 						<tr><td class='table-header'>About the event.</td></tr>
 						<tr><td>Event's Title <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Title' value="<?php echo htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8'); ?>" required /> </td></tr>
-						<tr><td >Event's Description <span class="asterisk">*</span> </td><tr></tr><td ><textarea   name ='announcement_Text' value='' required><?php echo htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8'); ?></textarea></td></tr>
+						<tr><td >Event's Description <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><textarea   name ='announcement_Text' value='' required><?php echo htmlspecialchars($announcement->announcement_Text, ENT_QUOTES, 'UTF-8'); ?></textarea></td></tr>
 						<tr><td>Location <span class="asterisk">*</span> </td><tr></tr><td colspan="2"><input type = text name ='announcement_Location' value="<?php echo htmlspecialchars($announcement->announcement_Location, ENT_QUOTES, 'UTF-8'); ?>" required/></td></tr>
 						<tr><td>Start Date (yy-mm-dd) <span class="asterisk">*</span> </td><td><input type ='text' name ='start_day'  value="<?php echo htmlspecialchars($announcement->start_day, ENT_QUOTES, 'UTF-8'); ?>" required/></td></tr>
 						<tr><td>Start Time <span class="asterisk">*</span></td>
@@ -113,7 +113,7 @@
 					<tr></tr>
 					<tr><td colspan="2"><hr/></td></tr>
 					<td  class="form-submission" colspan="2"><input class="form_submit_button" type= 'submit' name= 'edit_announcement' value= 'Save'/> 
-						<?php echo '<a href ='.URL.'announcement/getAnnouncementByID/'. htmlspecialchars($announcement->announcement_ID, ENT_QUOTES, "UTF-8").'>Cancel</a>';?>
+						<?php echo '<a href ="'.URL.'SOEInfoHubadmin/dashboard"/>Cancel</a>';?>
 					<td>
 					
 				</table>	

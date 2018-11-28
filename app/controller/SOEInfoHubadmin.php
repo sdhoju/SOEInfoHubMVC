@@ -236,6 +236,7 @@ class SOEInfoHubAdmin extends Controller
      public function EmailtoAll($announcement_ID){
 
             $announcement = $this->model->getAnnouncementByID($announcement_ID);
+            $contacts = $this->model->getContactsByID($announcement_ID);
             $majors = $this->admin->getMajors($announcement_ID)->major_ID;
             $classifications = $this->admin->getClassifications($announcement_ID)->cls_ID;
             $image = $this->admin->getAttachmentsByID($announcement_ID);
@@ -246,6 +247,13 @@ class SOEInfoHubAdmin extends Controller
             $majors = explode(',',$majors);
             $classifications = explode(',',$classifications);
 
+            date_default_timezone_set('America/Chicago');
+            $announcement->start_day = date("F d, Y", strtotime("$announcement->start_day"));
+            $announcement->end_day = date("F d, Y", strtotime("$announcement->end_day"));
+            $announcement->start_time = date("g:i a", strtotime($announcement->start_time));							
+            $announcement->end_time = date("g:i a", strtotime($announcement->end_time));
+
+           
 
             $students=array();
             foreach($majors as $major){
@@ -263,17 +271,31 @@ class SOEInfoHubAdmin extends Controller
                     }  
                 } ;
 
+            $replyto=array('name'=>$contacts[0]->contact_Name,'email'=>$contacts[0]->email);
             $subject=$announcement->announcement_Title;
-            $html='<h3>'.$announcement->announcement_Title.'</h3>
-                    <a href="'.URL.'announcement/getAnnouncementByID/'.$announcement->announcement_ID.'">View browser</a><br>
-                    <img  style="max-width:720px; max-height:720px" src="http:'.URL.'public/uploads/'.$image.'" alt="attachment" >		
-            <p>'. $announcement->announcement_Text.'</p>';
-            $html.='This is a system-generated mail. Please do not reply to this email.
-             <a href="http:'.URL.'announcement/unsubscribe"> Unsubscribe</a>';
-            $from=array('name'=>'School of  Engineering','email'=>'samee.dhoju@gmail.com');
+            $html='
+                <a href="http:'.URL.'announcement/getAnnouncementByID/'.$announcement->announcement_ID.'">View in browser.</a>
+                <div class="main-container" style="width:720px; font-size:1.1em;">
+                <h1>'.$announcement->announcement_Title.'</h1>
+                <img  style="max-width:720px; max-height:720px" src="http:'.URL.'public/uploads/'.$image.'" alt="attachment" >		
+                <p><b>Details:</b><br>'. $announcement->announcement_Text.'</p>
+                <p><b>Location:</b>'.$announcement->announcement_Location.' </p>';
+            if($announcement->start_day == $announcement->end_day)
+                $html.= '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_time.'<br>';
+            else							
+                $html.= '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_day." ".$announcement->end_time.' <br>';
+
+            $html.='<p>If you have any questions regarding this event please contact the following people.<br><ol>';
+                foreach($contacts as $contact){
+                    $html.='<li>'. $contact->contact_Name.' '.$contact->email.' '.$contact->phone.'</li>' ;
+                }
+            $html.='</ol></p></div>';
+            $html.='
+             <a href="http:'.URL.'announcement/unsubscribe">Unsubscribe</a>';
+            $from=array('name'=>'School of  Engineering','email'=>'no-reply-please@gmail.com');
     
             $newMailer = new Mailer(true);
-            $newMailer->mail($to,$subject,$html,$from);        
+            $newMailer->mail($to,$subject,$html,$from,$replyto);        
         }
 
 }
