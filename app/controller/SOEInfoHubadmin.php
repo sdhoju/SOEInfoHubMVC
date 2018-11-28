@@ -67,35 +67,108 @@ class SOEInfoHubAdmin extends Controller
    
     }
 
-        //View Function
     public function editform($announcement_ID)
     {
+
+        function checkFile(){
+            $valid = false;
+            $errors=array();
+            for ($i=0; $i<sizeof($_FILES['attachments']['name']);$i++)
+            {
+                $file_name = $_FILES['attachments']['name'][$i];
+                $file_size =$_FILES['attachments']['size'][$i];
+                $file_type=$_FILES['attachments']['type'][$i];
+                
+                $file_ext=strtolower(end(explode('.',  $_FILES['attachments']['name'][$i])));
+                $extensions= array("jpeg","jpg","png","pdf");
+                if(in_array($file_ext,$extensions) === false){
+                    $errors[]="extension not allowed, please choose a JPEG,JPG,PNG or PDF file.";
+                    $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n";
+                }
+                if($file_size > 5242880){
+                    $errors[]='File size must be smaller than 5 MB';
+                    $_SESSION["message"] = "File size must be smaller than 5 MB \n";
+                }
+            }
+
+            if(empty($errors)==true){
+                $valid = true;
+            }
+            return $valid;
+        }
+
+        $announcement = $this->admin->getAnnouncement($announcement_ID);
+        $submitters = $this->admin->getsubmitter($announcement_ID);
+        $announcement_majors = $this->admin->getMajors($announcement_ID);
+        $announcement_classifications = $this->admin->getClassifications($announcement_ID);
+        $attachments = $this->admin->getAttachments($announcement_ID);
+        $all_majors = $this->model->getAllMajor();
+        $all_classifications = $this->model->getAllClassification();
+
+        //Not logged in as admin
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
             $_SESSION["message"] = "Admin ";
             header('location: ' . URL.'SOEInfoHubadmin/index' );
         }else{
-            $announcement = $this->admin->getAnnouncement($announcement_ID);
-            $submitters = $this->admin->getsubmitter($announcement_ID);
-            $announcement_majors = $this->admin->getMajors($announcement_ID);
-            $announcement_classifications = $this->admin->getClassifications($announcement_ID);
-            $attachments = $this->admin->getAttachments($announcement_ID);
-            $majors = $this->model->getAllMajor();
-            $classifications = $this->model->getAllClassification();
+            if(isset($_POST["edit_announcement"])) {
+                if(checkfile() || empty($_FILES['attachments']['name'][0] )){
+
+                    $file_names = $_FILES['attachments']['name'];
+                    $file_types  = $_FILES['attachments']['type'];
+
+                    //Call the editAnnouncemen
+                    $result= $this->admin->updateAnnouncement(
+                                    $_POST["contact_Name"], 
+                                    $_POST["email"], 
+                                    $_POST["phone"],
+                                    $_POST["S_Organization"],
+                                    $announcement_ID,
+                                    $_POST["announcement_Title"],
+                                    $_POST["announcement_Text"], 
+                                    $_POST["announcement_Location"],
+                                    $_POST["start_day"],
+                                    $_POST["start_time"],
+                                    $_POST["end_day"],
+                                    $_POST["end_time"],
+                                    $_POST['external_link'],
+                                    $_POST["major"], 
+                                    $_POST["classification"],
+                                    $file_names,
+                                    $file_types);
+                    
+                    if($result==1)
+                        $_SESSION["message"] = "Changes saved";
+                    else
+                        $_SESSION["message"] = "No changes saved";
+                    //Upload the files   
+                    for($i=0; $i<sizeof($file_names);$i++){
+                        $img = $file_names[$i];
+                        $time=time();
+                        move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
+                    }
+                }
+                header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
+
+            }
             require APP . 'view/_templates/header.php';
             require APP . 'view/admin/editAnnouncement.php';
             require APP . 'view/_templates/footer.php';
         }
+
+
+        
+
     }
-    public function edit(){
-        if(isset($_POST["edit_announcement"])) {
-            header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
-        }
+  
+    public function deletefile(){
+        echo "From Ajax";
+        // $this->admin->deleteFile($file_ID);
     }
     
     public function publish($announcement_ID){
 
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
-            $_SESSION["message"] = "Admin ";
+            $_SESSION["message"] = "Not an admin";
             header('location: ' . URL.'SOEInfoHubadmin/index' );
         }else
         {
@@ -157,6 +230,7 @@ class SOEInfoHubAdmin extends Controller
          $_SESSION["username"] = NULL;
          header('location: ' . URL.'SOEInfoHubadmin/index' );
         }
+
     
      public function EmailtoAll($announcement_ID){
             // str($email);
@@ -187,7 +261,6 @@ class SOEInfoHubAdmin extends Controller
                     }  
                 } ;
             // print_r($to );exit();
-
 
             $subject=$announcement->announcement_Title;
             $html='<h3>'.$announcement->announcement_Title.'</h3>

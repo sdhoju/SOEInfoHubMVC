@@ -162,7 +162,7 @@ class Model
     public function getAnnouncementByID($announcement_ID)
     {
         //published =1 AND
-        $sql = "SELECT * FROM announcement natural join announcementFile WHERE   announcement_ID = :announcement_ID  LIMIT 1 ";
+        $sql = "SELECT * FROM announcement WHERE   announcement_ID = :announcement_ID  LIMIT 1 ";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
@@ -171,6 +171,7 @@ class Model
         // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
         return $query->fetch();
     }
+
 
     public function getImagesByID($announcement_ID)
     {
@@ -198,9 +199,44 @@ class Model
         return $query->fetchAll();
     }
 
+    public function getContactsByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT * FROM submitter WHERE   announcement_ID = :announcement_ID ; ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetchAll();
+    }
 
+    public function getMajorsByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT * FROM announcemajor natural join major WHERE   announcement_ID = :announcement_ID ; ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetchAll();
+    }
 
-
+    public function getClassificationsByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT * FROM announcecls natural join classification WHERE   announcement_ID = :announcement_ID ; ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetchAll();
+    }
 
 
 

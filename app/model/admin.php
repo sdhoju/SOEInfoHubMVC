@@ -43,35 +43,7 @@ class Admin extends Model
         return $query->fetch();
     }
 
-    public function deleteAnnouncement($announcement_ID){
-        $sql="START TRANSACTION;";
-        $sql.= "Delete  FROM announcementFile WHERE  announcement_ID = :announcement_IDF; ";
-        $sql.= "Delete FROM announceMajor WHERE  announcement_ID = :announcement_IDM ;";
-        $sql.= "Delete  FROM announceCls WHERE  announcement_ID = :announcement_IDC ;";
-        $sql.= "Delete  FROM submitter WHERE  announcement_ID = :announcement_IDS ;";
 
-        $sql.= "Delete FROM announcement WHERE  announcement_ID = :announcement_ID;";
-        $sql.="COMMIT;";       
-        $query = $this->db->prepare($sql);
-        $parameters = array(':announcement_IDF' => $announcement_ID,
-                        ':announcement_IDM' => $announcement_ID,
-                        ':announcement_IDC' => $announcement_ID,  
-                        ':announcement_IDS' => $announcement_ID,  
-                        ':announcement_ID' => $announcement_ID   
-                    );
-        $query->execute($parameters);
-        // fetch() is the PDO method that get exactly one result
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-        // return $query->fetch();
-        $reults=0;
-        do {
-            $reults+= $query->rowCount();
-        } while ($query->nextRowset());
-        
-        return $reults;
-
-    }
     public function getAnnouncement($announcement_ID){
         $sql = "SELECT * FROM announcement WHERE  announcement_ID = :announcement_ID  LIMIT 1 ";
         $query = $this->db->prepare($sql);
@@ -203,5 +175,150 @@ class Admin extends Model
         return $query->fetchAll();
 
     }
+    public function deleteAnnouncement($announcement_ID){
+        $sql="START TRANSACTION;";
+        $sql.= "Delete  FROM announcementFile WHERE  announcement_ID = :announcement_IDF; ";
+        $sql.= "Delete FROM announceMajor WHERE  announcement_ID = :announcement_IDM ;";
+        $sql.= "Delete  FROM announceCls WHERE  announcement_ID = :announcement_IDC ;";
+        $sql.= "Delete  FROM submitter WHERE  announcement_ID = :announcement_IDS ;";
+
+        $sql.= "Delete FROM announcement WHERE  announcement_ID = :announcement_ID;";
+        $sql.="COMMIT;";       
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_IDF' => $announcement_ID,
+                        ':announcement_IDM' => $announcement_ID,
+                        ':announcement_IDC' => $announcement_ID,  
+                        ':announcement_IDS' => $announcement_ID,  
+                        ':announcement_ID' => $announcement_ID   
+                    );
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        // return $query->fetch();
+        $reults=0;
+        do {
+            $reults+= $query->rowCount();
+        } while ($query->nextRowset());
+        
+        return $reults;
+    }
+
+    public function updateAnnouncement(
+                $contact_Name, $email, $phone=[],$S_Organization=[],
+                $announcement_ID,
+                $announcement_Title,
+                $announcement_Text, 
+                $announcement_Location,
+                $start_day,
+                $start_time,
+                $end_day,
+                $end_time,
+                $external_link,
+                $majors,$classifications,
+                $filenames,$filetypes){ //Start of Edit 
+
+        $parameters = array( 
+            // ':announcement_IDF' => $announcement_ID,
+            ':announcement_IDM' => $announcement_ID,
+            ':announcement_IDC' => $announcement_ID,  
+            ':announcement_IDS' => $announcement_ID,  
+            ':announcement_ID' => $announcement_ID,
+            ':announcement_Title' => $announcement_Title,
+            ':announcement_Text' => $announcement_Text,
+            ':announcement_Location' => $announcement_Location,
+            ':start_day' => $start_day,
+            ':start_time' => $start_time,
+            ':end_day' => $end_day,
+            ':end_time' => $end_time,
+            ':external_link' => $external_link
+            );
+        
+        $sql="START TRANSACTION;";
+        // $sql.= "Delete  FROM announcementFile WHERE  announcement_ID = :announcement_IDF; ";
+        $sql.= "Delete FROM announceMajor WHERE  announcement_ID = :announcement_IDM ;";
+        $sql.= "Delete  FROM announceCls WHERE  announcement_ID = :announcement_IDC ;";
+        $sql.= "Delete  FROM submitter WHERE  announcement_ID = :announcement_IDS ;";
+
+        $sql.=" UPDATE announcement SET announcement_Title = :announcement_Title,
+                                        announcement_Text =:announcement_Text,
+                                        announcement_Location=:announcement_Location,
+                                        start_day=:start_day,
+                                        start_time=:start_time,
+                                        end_day=:end_day,
+                                        end_time=:end_time,
+                                        external_link=:external_link
+                                    where announcement_ID=:announcement_ID";
+        $sql.=";";    
+
+        // Insert into table submitter
+        $sql.= " INSERT INTO submitter(announcement_ID,contact_Name,email,phone,S_organization)VALUES";
+        for($x = 0; $x < sizeof($contact_Name); $x++){
+            $sql.="(:submitterannounce_ID$x, :contact_Name$x, :email$x, :phone$x, :S_organization$x),";
+            $parameters[":submitterannounce_ID$x"]=$announcement_ID;
+            $parameters[":contact_Name$x"]=$contact_Name[$x];
+            $parameters[":email$x"]=$email[$x];
+            $parameters[":phone$x"]=$phone[$x];
+            $parameters[":S_organization$x"]=$S_Organization[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";    
+
+        // Insert into table announceMajor
+        $sql.= " INSERT INTO announceMajor(announcement_ID,major_ID)VALUES";
+        for($x = 0; $x < sizeof($majors); $x++){
+            $sql.="(:announceMajorannounce_ID$x,:majors$x),";
+            $parameters[":announceMajorannounce_ID$x"]=$announcement_ID;
+            $parameters[":majors$x"]=$majors[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";   
+
+        // Insert into table announceCLS      
+        $sql.= " INSERT INTO announceCls(announcement_ID,cls_ID)VALUES";
+        for($x = 0; $x < sizeof($classifications); $x++){
+            $sql.="(:announceClsannounce_ID$x,:classifications$x),";
+            $parameters[":announceClsannounce_ID$x"]=$announcement_ID;
+            $parameters[":classifications$x"]=$classifications[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.="; "; 
+
+        //Insert into announceFile
+        $sql.= "INSERT INTO announcementFile(announcement_ID,file_name,file_type)VALUES";
+        for($x = 0; $x < sizeof($filenames); $x++){
+            $sql.="(:announcementFileannounce_ID$x,:filenames$x,:filetypes$x),";
+            $parameters[":announcementFileannounce_ID$x"]=$announcement_ID;
+            $parameters[":filenames$x"]=$filenames[$x];
+            $parameters[":filetypes$x"]=$filetypes[$x];
+        }
+        $sql= rtrim($sql,',');
+        $sql.=";";  
+
+        $sql.="COMMIT;";       
+
+        $query = $this->db->prepare($sql);
+        
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        // return $query->fetch();
+        $reults=0;
+        do {
+            $reults+= $query->rowCount();
+        } while ($query->nextRowset());
+        
+        return $reults;
+    }
+
+    public function deleteFile($file_ID)
+            {
+                    $sql= "Delete  FROM announcementFile WHERE  file_ID = :file_ID;";
+                    $parameters = array( ':file_ID' => $file_ID);
+                    $query = $this->db->prepare($sql);
+                    $query->execute($parameters);
+            }
+
 
 }
