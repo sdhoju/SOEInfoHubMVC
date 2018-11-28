@@ -76,9 +76,10 @@
     }
     
 .announcement-post-image-header {
+    max-height: 480px;
+
     width: 90%;
     margin-left: 5%;
-    height: auto;
 
 }
 .announcement_post p{
@@ -138,6 +139,10 @@
 .announcement-attachment input[type='file']{
        color:white!important;
 
+}
+
+.table-header{
+    font-size: 2em!important;
 }
 .container-card.subscribe{
     background-color:#14213D;

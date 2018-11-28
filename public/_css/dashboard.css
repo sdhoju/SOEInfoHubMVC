@@ -11,7 +11,6 @@
 }
 .searchbar
 {
-    /* width: 250px; */
     font-size: 1.25em;
     height: 20px;
     max-height: 20px;
@@ -40,11 +39,11 @@
 }
 
 
-.admin_dashboard table{
-    background-color: #14213D;
-    width:100%;
-	margin-left: 10%;
-    margin-right: 10%;
+.admin-main table{
+    /* background-color: #14213D; */
+    width:100%!important;
+	/* margin-left: 10%;
+    margin-right: 10%; */
 }
 .admin_dashboard tr{
     /* padding-bottom: 25em; */
@@ -104,12 +103,13 @@ only screen and (max-width: 760px),
 	
 	/*
 	Label the data
-	*/
-    .admin-main td:nth-of-type(1):before { content: "Title:"; }
-	.admin-main td:nth-of-type(2):before { content: "Contact \A Name:"; }
-	.admin-main td:nth-of-type(3):before { content: "Detail:"; }
-	.admin-main td:nth-of-type(4):before { content: "Edit:"; }
-	.admin-main td:nth-of-type(5):before { content: "Publish:"; }
-	.admin-main td:nth-of-type(6):before { content: "Delete:"; }
+    */
+    .admin-main td:nth-of-type(1):before { content: "Day:"; }
+    .admin-main td:nth-of-type(2):before { content: "Title:"; }
+	.admin-main td:nth-of-type(3):before { content: "Contact \A Name:"; }
+	.admin-main td:nth-of-type(4):before { content: "Detail:"; }
+	.admin-main td:nth-of-type(5):before { content: "Edit:"; }
+	.admin-main td:nth-of-type(6):before { content: "Publish:"; }
+	.admin-main td:nth-of-type(7):before { content: "Delete:"; }
 
 }
