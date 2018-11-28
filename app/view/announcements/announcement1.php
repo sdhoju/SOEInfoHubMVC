@@ -4,17 +4,47 @@
 				<h3 class='announcement-post-title'>
 					<?php if (isset($announcement->announcement_Title)) echo htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8'); ?>
 				</h3>
-				<div id="attachment" class="wp-caption alignright">
+				<div id="attachment" class="wp-caption alignright" style="width:650px">
 				<!-- <div id="attachment_377" class="wp-caption alignright"> -->
+					<?php 
 
-					<img id="myImg"  class="announcement-post-image-header" src="<?php echo URL.'uploads/'.$announcement->file_name ?>" alt=<?php $announcement->announcement_Title ?> >
+						$all_images=array();
+						$all_pdfs=array();
+						foreach($images as $image){
+							$all_images[]=$image->file_name;
+						}
+						if (empty($all_images)){
+							$all_images[]='placeholder.jpg';
+						}
+
+						foreach($PDFs as $pdf){
+							$all_pdfs[]=$pdf->file_name;
+						}
+
+
+					?>
+					<img id="myImg"  class="announcement-post-image-header" src="<?php echo URL.'uploads/'.$all_images[0] ?>" alt=<?php $announcement->announcement_Title ?> >
+					<?php
+						if (!empty($all_pdfs)){
+							echo'<br>';
+							foreach($all_pdfs as $pdf){
+					
+								echo'<a href='.$pdf.' target="_blank" >'.$pdf.'</a>';
+
+							}
+	
+
+						}
+					?>
+					
 					<div id="myModal" class="modal">
-						<span class="close">&times;</span>
-						<img class="modal-content" id="img01">
-						<div id="caption">
+							<span class="close">&times;</span>
+							<img class="modal-content" id="img01">
+							<div id="caption">
+							</div>
 						</div>
-					</div>
 					<script src=<?php echo URL."_js/imagemodal.js" ?>></script>
+					
 				</div>
 			
 
@@ -39,7 +69,7 @@
 								}
 							?>
 							
-							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events.</a></li>
+							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events.</></li>
 							<li style=" padding:1.25em;">
 								
 								<?php $url = 'https:'.URL;

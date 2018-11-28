@@ -9,7 +9,7 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
 
-	<title>School of Engineering &bull; Information Hub</title>
+	<title>School of Engineering Information Hub</title>
 
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' />
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' />
@@ -20,15 +20,23 @@
 	<link rel='stylesheet' href='<?php echo URL; ?>_css/style.css'>
 	<link rel='stylesheet' href='<?php echo URL; ?>_css/imagemodal.css'>
 
+	<link rel='stylesheet' href='<?php echo URL; ?>public/_css/style.css'>
+	<link rel='stylesheet' href='<?php echo URL; ?>public/_css/imagemodal.css'>
+
+
 	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src='<?php echo URL; ?>_js/imagemodal.js'></script>
+	<script src='<?php echo URL; ?>_js/utilities.js'></script>
    
 
 	<link rel='stylesheet' href='<?php echo URL; ?>custom.css'>
 	<link rel='stylesheet' href='<?php echo URL; ?>_css/dashboard.css'>
+	<link rel='stylesheet' href='<?php echo URL; ?>public/custom.css'>
+	<link rel='stylesheet' href='<?php echo URL; ?>public/_css/dashboard.css'>
 
 </head>
 <body class='secondary'>

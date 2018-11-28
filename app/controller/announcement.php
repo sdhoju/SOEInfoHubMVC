@@ -20,6 +20,8 @@ class Announcement extends Controller
     public function getAnnouncementByID($announcement_ID)
     {   
       
+        $PDFs= $this->model->getPdfByID($announcement_ID);
+        $images = $this->model->getImagesByID($announcement_ID);
         $announcement = $this->model->getAnnouncementByID($announcement_ID);
         if( $announcement->published==0){
             if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"]) ) {
@@ -47,6 +49,19 @@ class Announcement extends Controller
       
 
     }
+
+        public function subscribe()
+        { 
+            if (isset($_POST["subscribe"])) {
+
+                $_SESSION["message"] = "You have been added to the list";
+            }
+            require APP . 'view/_templates/fbheader.php';
+            require APP . 'view/email/subscribe.php';
+            require APP . 'view/_templates/footer.php';
+        }
+
+
         public function shareInFacebook($announcement_ID)
         {
         // if we have an id of a song that should be deleted
@@ -85,7 +100,6 @@ class Announcement extends Controller
                     $errors[]="extension not allowed, please choose a JPEG,JPG,PNG or PDF file.";
                     $_SESSION["message"] = "This Type of file is not allowed, please choose a JPEG,JPG,PNG or PDF file.\n";
                 }
-                
                 if($file_size > 5242880){
                     $errors[]='File size must be smaller than 5 MB';
                     $_SESSION["message"] = "File size must be smaller than 5 MB \n";
@@ -234,7 +248,7 @@ class Announcement extends Controller
 
             //This is the most important coding.
             header("Content-Type: text/Calendar");
-            header("Content-Disposition: inline; filename=".htmlspecialchars($announcement->announcement_Title, ENT_QUOTES, 'UTF-8').".ics");
+            header("Content-Disposition: inline; filename=invite.ics");
             echo "BEGIN:VCALENDAR\n";
             echo "PRODID:-//Microsoft Corporation//Outlook 12.0 MIMEDIR//EN\n";
             echo "VERSION:2.0\n";

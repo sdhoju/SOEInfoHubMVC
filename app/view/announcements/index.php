@@ -33,12 +33,14 @@
 						
 						echo'</div>';//end of attachment_377
 						echo'<div id="myModal" class="modal">
-							<span class="close">&times;</span>
-							<img class="modal-content" id="img01">
+								<span class="close">&times;</span>
+								<img class="modal-content" id="img01">
 							<div id="caption">
 							</div>
 						</div>';//end of modal
-						echo'<script src="'.URL.'public/_js/imagemodal.js"></script>';
+						echo'<script src="'.URL.'_js/imagemodal.js"></script>';
+						echo'<script src="'.URL.'_js/utilities.js"></script>';
+
 
 						echo'<div class="announcement-text alignright">';
 							echo "<a href = ".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">";
@@ -58,6 +60,7 @@
 							
 
 
+
 							echo '<div class="announcement-description"  style="padding-bottom:10px;">';
 								echo'<b>Details:</b></br>';
 								if (isset($row->announcement_Text)) $text =  htmlspecialchars($row->announcement_Text, ENT_QUOTES, 'UTF-8');
@@ -71,7 +74,8 @@
 						
 							echo'<b>Recommended for:</b><br>';
 							echo '<div class="wrapper-con-rec">';
-								echo '<div class="recommended" style=" padding-bottom:10px; margin-left:5px">';
+
+								echo '<div class="recommended" style=" padding-bottom:10px; ">';
 									echo'<b>Majors: </b><br>';
 									$majors = explode(',', $row->major_IDs);
 									// print_r($majors);
@@ -87,7 +91,8 @@
 									}
 								
 								echo' </div>';
-								echo '<div class="recommended" style="  margin-left:5px">';
+
+								echo '<div class="recommended" style="margin-left:10px;">';
 								echo'<b>Classifications: </b><br>';
 
 								$classifications = explode(',', $row->cls_IDs);
@@ -133,14 +138,15 @@
 		 <span id="loadmore" num_loaded="10">Load More</span>
 
 		<div class="rightsidebar">
-			<nav id="nav_menu-4" class="sidebar otherlinks widget_nav_menu">
+			<nav id="nav_menu-1" class="sidebar otherlinks widget_nav_menu">
 					<h2>Sidebar Secondary Links</h2>
-					<div id="menu-location-" class="menu-sidebar-secondary-links-container">
+					<div id="menu-location-" class="menu-sidebar-primary-links-container">
 						<ol style="list-style-type: none;">
-							<li style=" padding:1.25em; font-size:1.25em;">
-								<a href="<?php echo URL;?>announcement/Form">Submit form</a><br>
+							<li style="  font-size:1.25em;">
+								<a href="<?php echo URL;?>announcement/Form">Submit an announcement</a><br>
+								<a href="<?php echo URL;?>announcement/subscribe">Join our email list</a><br>
 							</li>
-							<li style=" padding:1.25em; font-size:1.25em;">
+							<li style=" font-size:1.25em;">
 								<a href="<?php echo URL;?>SOEInfoHubadmin">Login</a>
 							</li>
 

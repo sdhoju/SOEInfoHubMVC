@@ -46,21 +46,6 @@ class Model
     }
   
 
-    /**
-     * Get an Announcement by ID from database
-     */
-    public function getAnnouncementByID($announcement_ID)
-    {
-        //published =1 AND
-        $sql = "SELECT * FROM announcement natural join announcementFile WHERE   announcement_ID = :announcement_ID  LIMIT 1 ";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':announcement_ID' => $announcement_ID);
-        $query->execute($parameters);
-        // fetch() is the PDO method that get exactly one result
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-        return $query->fetch();
-    }
   
     public function addAnnouncement(
         $created_at,$announcement_ID,
@@ -151,8 +136,7 @@ class Model
         return $reults;
     }
 
-    
-   
+
 
     public function getAllMajor()
     {
@@ -172,7 +156,47 @@ class Model
     }
 
 
+    /**
+     * Get an Announcement by ID from database
+     */
+    public function getAnnouncementByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT * FROM announcement natural join announcementFile WHERE   announcement_ID = :announcement_ID  LIMIT 1 ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetch();
+    }
 
+    public function getImagesByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT file_name FROM announcementFile WHERE   announcement_ID = :announcement_ID and file_type != 'application/pdf' ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetchAll();
+    }
+
+    public function getPdfByID($announcement_ID)
+    {
+        //published =1 AND
+        $sql = "SELECT file_name FROM announcementFile WHERE   announcement_ID = :announcement_ID and file_type = 'application/pdf' ";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':announcement_ID' => $announcement_ID);
+        $query->execute($parameters);
+        // fetch() is the PDO method that get exactly one result
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+        return $query->fetchAll();
+    }
 
 
 
