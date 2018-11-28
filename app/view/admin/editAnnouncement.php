@@ -10,7 +10,10 @@
 			// echo 'In progress';
 	?>
 
-
+			<div>
+            <button id="javascript-ajax-button" onclick='deletefile("Lets say ID")'>AJAX</button></button>
+            <div id="javascript-ajax-result-box"></div>
+        </div>
 			<form action='<?php echo URL;?>SOEInfoHubadmin/editform/<?php echo $announcement->announcement_ID;?>' method='post'  enctype="multipart/form-data">
 			<center> <h3 style="font-size: 2em;text-align:center">In progress Edit</h3>
 					 
@@ -78,35 +81,36 @@
 
 					</tbody>
 					<tr><td >External link (if any) :</td><tr></tr><td colspan="2" style="padding-bottom:2em;"><input type = text name ='external_link'  value="<?php echo htmlspecialchars($announcement->external_link, ENT_QUOTES, 'UTF-8'); ?>"  /> </td></tr>
-						<tr>
 					<tbody class="announcement-attachment">
 						
 							<?php 
 								$extensions= array("jpeg","jpg","png");
-
 								foreach($attachments as $attachment){
-									
 									echo '<tr>';
-										if(in_array(strtolower(explode('.',$attachment->file_name)[1]),$extensions))
-										{
-											// URL.'uploads/'.$all_images[0]
-											echo"<td><img src=".URL."uploads/".$attachment->file_name." '> </td>";
-
-										}else{
-											echo"<td><li>$attachment->file_name</li></td>";
+										if(isset($attachment->file_name) ){
+											$file_ext=explode('.',$attachment->file_name);
+											$file_ext=strtolower(end($file_ext));
+											if(in_array($file_ext,$extensions))
+											{
+												// URL.'uploads/'.$all_images[0]
+												echo"<td><img src=".URL."uploads/".$attachment->file_name." '> </td>";
+											}else{
+												echo"<td><li>$attachment->file_name</li></td>";
+											}
+											echo'<td><button class="add-new-attachment"; id="javascript-ajax-button" );">Delete</button></td>';
+											echo'</tr>';
 										}
-										echo'<td><button class="add-new-attachment"; id="javascript-ajax-button" );">Delete</button></td>';
-										echo'</tr>';
+										
 								}
 								
 							?>
 							  
-						
-						<td>
-							Attachment (must be a pdf, png, or jpeg file): <input type="file"  name="attachments[]" accept="image/png,,image/jpeg,image/jpg,.pdf" multiple>
-						</td>
-						<td><button class="add-new-attachment" onClick="addAnother('announcement-attachment','add-new-attachment');">Add Another</button></td>
-						</tr>
+						<!-- <tr>
+							<td>
+								Attachment (must be a pdf, png, or jpeg file): <input type="file"  name="attachments[]" accept="image/png,,image/jpeg,image/jpg,.pdf" multiple>
+							</td>
+							<td><button class="add-new-attachment" onClick="addAnother('announcement-attachment','add-new-attachment');">Add Another</button></td>
+						</tr> -->
 					</tbody>
 					<tr></tr>
 					<tr><td colspan="2"><hr/></td></tr>

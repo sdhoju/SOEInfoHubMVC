@@ -3,7 +3,7 @@ $(function() {
 
         $('#javascript-ajax-button').on('click', function(){
 
-            $.ajax("/SOEInfoHubadmin/ajaxGetStats")
+            $.ajax("/SOEInfoHubadmin/deletefile")
                 .done(function(result) {
                     $('#javascript-ajax-result-box').html(result);
                 })
@@ -14,6 +14,9 @@ $(function() {
                     // this will ALWAYS be executed, regardless if the ajax-call was success or not
                 });
         });
+    }
+    function deletefile(str){
+        $('#javascript-ajax-result-box').html(str);
     }
 
 });

@@ -96,7 +96,7 @@ class SOEInfoHubAdmin extends Controller
             }
             return $valid;
         }
-        
+
         $announcement = $this->admin->getAnnouncement($announcement_ID);
         $submitters = $this->admin->getsubmitter($announcement_ID);
         $announcement_majors = $this->admin->getMajors($announcement_ID);
@@ -160,10 +160,9 @@ class SOEInfoHubAdmin extends Controller
 
     }
   
-    public function ajaxGetStats(){
-        $submitters = $this->admin->getsubmitter($announcement_ID);
-        echo  $submitters;
-
+    public function deletefile(){
+        echo "From Ajax";
+        // $this->admin->deleteFile($file_ID);
     }
     
     public function publish($announcement_ID){

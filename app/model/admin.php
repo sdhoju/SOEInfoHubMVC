@@ -312,10 +312,10 @@ class Admin extends Model
         return $reults;
     }
 
-    public function deleteFile($announcement_ID,$filename)
+    public function deleteFile($file_ID)
             {
-                    $sql= "Delete  FROM announcementFile WHERE  announcement_ID = :announcement_ID; and file_name = :file_name";
-                    $parameters = array( ':announcement_ID' => $announcement_ID,':file_name' => $filename);
+                    $sql= "Delete  FROM announcementFile WHERE  file_ID = :file_ID;";
+                    $parameters = array( ':file_ID' => $file_ID);
                     $query = $this->db->prepare($sql);
                     $query->execute($parameters);
             }
