@@ -27,7 +27,10 @@
 						<tr>
 							<td>Organization  </td><tr></tr><td><input type = text name ='S_Organization[]' value= '' /></td>
 							
-							<td ><button class="remove" >Remove</button> <button class="add-new-contact" onClick="addAnother('contact-info','add-new-contact');">Add Another</button></td>
+							<td >
+							<!-- <button class="remove" >Remove</button>  -->
+							<button class="add-new-contact" onClick="addAnother('contact-info','add-new-contact');">
+							Add Another</button></td>
 						</tr>
 						<tr><td colspan="2"><hr/></td></tr>
 					</tbody>

@@ -4,6 +4,11 @@
 
 		<div class='announcement-items'>
 			<?php
+			
+                  if (($output = message()) !== null) {
+                    echo $output;
+                    $output=null;
+                  }
 				if (empty($announcements)){
 					echo '<div class="announcement-post" style="font-size:3em!important; margin-left:100px;">';
 
@@ -43,7 +48,7 @@
 
 
 						echo'<div class="announcement-text alignright">';
-							echo "<a href = ".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">";
+							echo "<a href = ".URL . 'announcement/a/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">";
 								echo "<h3 class='announcement-post-title'>".$row->announcement_Title."</h3>";
 							echo'</a>';
 							echo'<b>Location:</b>'.$row->announcement_Location.'<br>';
@@ -66,9 +71,12 @@
 								if (isset($row->announcement_Text)) $text =  htmlspecialchars($row->announcement_Text, ENT_QUOTES, 'UTF-8');
 								
 								echo (strlen($text) >= 500) ? 
-										substr($text, 0, 500)."<a href =".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').
+										substr($text, 0, 500)."<a href =".URL . 'announcement/a/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').
 										"'>... Read more</a>":$row->announcement_Text;
-								echo $row->external_link;
+								if(!empty($row->external_link)){
+								echo '<br><a class="preview" href='.$row->external_link.'>'.$row->external_link.'</a>';
+								// echo'<div class="mypreview"><iframe src="http://en.wikipedia.org/" width = "500px" height = "500px"></iframe></div> ';
+								}
 							echo"</div>";//end of announcement-description
 
 						
@@ -135,15 +143,15 @@
 
 			?>
 		</div> <!-- end of  announcement-items-->
-		 <span id="loadmore" num_loaded="10">Load More</span>
+		 <!-- <span id="loadmore" num_loaded="10">Load More</span> -->
 		 <div id="myNav" class="overlay">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 			<div class="overlay-content">
 				<div class="card">
 					<div class="container-card subscribe">
 					<p style="color:white; ">
-							We send out the announcement of events on the campus. 
-							You can get involded by subscribing.
+							We send out announcements of events to students. 
+							You can get involved by subscribing.
 
 						</p>
 					<?php 

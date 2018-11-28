@@ -170,7 +170,7 @@
 .subscribe ::placeholder { 
     color: whitesmoke;
     opacity: 1; /* Firefox */
-    /* font-size: 1.35em; */
+    font-size: 0.75em;
 }
 
 
@@ -390,12 +390,38 @@ and also iPads specifically.
         padding: .5em;
 
     }
+    .announcement {
+        font-size: 1.15em!important;
+        /* margin-left: 20%; */
+        /* float: left; */
+        /* width: 95%; */
+        /* padding: 2em; */
+        min-height: 0;
+    }
+    #attachment{
+        width:100%
+    }
+    .mypreview{
+            display: none;
+            width: 100%;
+        }
+    
+    .preview a:hover + .mypreview,.mypreview:hover{
+        display: block;
+        position: relative;
+        z-index: 100;
+    }
     .rightsidebar 
     {
         width: 100%;
         margin: auto;
         position: inherit;
         float: left;
+    }
+    .announcement.announcement-description {
+        margin-left: 0;
+        width: 100%;
+        text-align: justify;
     }
     .announcement-text.alignright {
         margin: auto;
@@ -421,7 +447,7 @@ and also iPads specifically.
 
     }
     #myImg {
-        width: 80%;
+        width: 500px;
         margin-left: 0;
         height: auto;
     }

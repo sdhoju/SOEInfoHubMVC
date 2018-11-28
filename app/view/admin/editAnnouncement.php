@@ -21,7 +21,7 @@
 							<tbody class="contact-info">
 							<tr><td>Contact Name <span class="asterisk">*</span> </td><tr></tr><td><input type = text name ="contact_Name[]" value="<?php echo $submitter->contact_Name;?>" required/></td></tr>
 							<tr><td>Contact Email <span class="asterisk">*</span></td><tr></tr><td><input type="email" name ="email[]" value=<?php echo $submitter->email;?>  required/></td></tr>
-							<tr><td>Contact Phone  </td><tr></tr><td><input type = text name ="phone[]" value= <?php echo $submitter->phone;?>  ></td></tr>
+							<tr><td>Contact Phone  </td><tr></tr><td><input type = text name ="phone[]" value= '<?php echo $submitter->phone;?>'  ></td></tr>
 							<tr>
 								<td>Organization  </td><tr></tr><td><input type = text name ='S_Organization[]' value="<?php echo $submitter->S_organization;?>" ></td>
 							</tr>
@@ -92,7 +92,7 @@
 											if(in_array($file_ext,$extensions))
 											{
 												// URL.'uploads/'.$all_images[0]
-												echo"<td><img src=".URL."uploads/".$attachment->file_name." '> </td>";
+												echo"<td><img src='".URL."uploads/".$attachment->file_name."' '> </td>";
 											}else{
 												echo"<td><li>$attachment->file_name</li></td>";
 											}

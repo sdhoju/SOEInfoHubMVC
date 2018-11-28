@@ -48,6 +48,7 @@ class SOEInfoHubAdmin extends Controller
         }
     }
     
+
     //View Function
     public function dashboard()
     {
@@ -298,4 +299,59 @@ class SOEInfoHubAdmin extends Controller
             $newMailer->mail($to,$subject,$html,$from,$replyto);        
         }
 
+        public function importSubs(){
+            if(!isset($_SESSION["username"])) {
+                $_SESSION["message"] = "You must login in first!";
+                header('location: ' . URL.'SOEInfoHubadmin/index' );
+            }else{
+                if(isset($_POST["uploadExcel"])) {   
+                    require APP.'libs/PHPExcel/Classes/PHPExcel/IOFactory.php';
+                    $inputfilename = $_FILES['file']['tmp_name'];
+                    //Danger Zone
+                    $this->admin->resetStudents();
+
+                    try{
+                        $inputfiletye= PHPExcel_IOFactory::identify($inputfilename);
+                        $objReader =PHPExcel_IOFactory::createReader($inputfiletye);
+                        $objectPHPExcel=$objReader->load($inputfilename);
+                    }catch(Exception $e){
+
+                    }
+                    $sheet = $objectPHPExcel->getSheet(0);
+                    $highestRow= $sheet->getHighestRow();
+                    $highestColumn=$sheet->getHighestColumn();
+                    for($row=1;$row<=$highestRow; $row++){
+                        $rowData=$sheet->rangeToArray('A'.$row.':'.$highestColumn.$row,Null,True,False);
+                        $major_ID=10;
+                            if($rowData[0][4]=='Major - Biomedical Engineering')
+                                $major_ID=1;
+                            elseif ($rowData[0][4]=='Major - Chemical Engineering')
+                                $major_ID=2;
+                            elseif ($rowData[0][4]=='Major - Civil Engineering')
+                                $major_ID=3;
+                            elseif ($rowData[0][4]=='Major - Computer Science')
+                                $major_ID=4;
+                            elseif ($rowData[0][4]=='Major - Electrical Engineering')
+                                $major_ID=5;
+                            elseif ($rowData[0][4]=='Major - General Engineering')
+                                $major_ID=6;
+                            elseif ($rowData[0][4]=='Major - Geological Engineering')
+                                $major_ID=7;
+                            elseif ($rowData[0][4]=='Major - Geology')
+                                $major_ID=8;
+                            elseif ($rowData[0][4]=='Major - Mechanical Engineering')
+                                $major_ID=9;
+                            // print_r($rowData); exit(); 
+                        
+                        $this->admin->importSubscribers($rowData[0][0],$rowData[0][1],$rowData[0][2],$rowData[0][3],$major_ID,$rowData[0][5]);
+                        $_SESSION["message"] = "Successfully reset the students";
+                    }
+
+
+                }
+                require APP . 'view/_templates/header.php';
+                require APP . 'view/admin/students.php';
+                require APP . 'view/_templates/footer.php';
+        }
+    }   
 }

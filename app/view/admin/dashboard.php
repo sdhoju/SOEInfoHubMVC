@@ -9,9 +9,9 @@
 				$admin = $_SESSION["admin"];
 				
 				?>
-				<div class="logout-button">			
+				<div class="logout-button">	
 				<a href=<?php echo URL;?> >Feed Page </a>
-
+					
 					Hi <?php echo $admin;?>!&nbsp;
 					<a href=<?php echo URL;?>SOEInfoHubadmin/logout >  LOG OUT</a>
 				</div>
@@ -45,7 +45,7 @@
 
 					echo '<td>'.htmlspecialchars($row->start_day, ENT_QUOTES, 'UTF-8')."\n".htmlspecialchars($row->start_time, ENT_QUOTES, 'UTF-8').'</td>';
 					$string=htmlspecialchars($row->announcement_Text, ENT_QUOTES, 'UTF-8');
-					echo "<td><a href = ".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">".$row->announcement_Title."</a></td>";
+					echo "<td><a href = ".URL . 'announcement/a/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">".$row->announcement_Title."</a></td>";
 					$contact_Names = explode(',', $row->contact_Names);
 					echo "<td>";
 					foreach($contact_Names as $name){
@@ -93,7 +93,8 @@
 				
 			</table>
 			
-			
+			<a href="<?php echo URL;?>SOEInfoHubadmin/importSubs" >Reset Students list</a>
+
 			
 			</div>
 		</div>

@@ -17,7 +17,7 @@ class Announcement extends Controller
         require APP . 'view/_templates/footer.php';
     }
 
-    public function getAnnouncementByID($announcement_ID)
+    public function a($announcement_ID)
     {   
         $PDFs= $this->model->getPdfByID($announcement_ID);
         $images = $this->model->getImagesByID($announcement_ID);
@@ -126,7 +126,7 @@ class Announcement extends Controller
                             $_POST["start_time"],
                             $_POST["end_day"],
                             $_POST["end_time"],
-                            $_['external_link'],
+                            $_POST['external_link'],
                             $_POST["major"], 
                             $_POST["classification"],
                             $file_names,
@@ -142,7 +142,7 @@ class Announcement extends Controller
         
         
                     //Generate the Submission message
-                    $_SESSION["message"] = "Thank you!  ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title']."
+                    $_SESSION["message"] = "Thank you, ".$_POST['contact_Name'][0]." for telling us about ".$_POST['announcement_Title'].". 
                                             The School of Engineering will review and release the announcement soon. ";       
         
                     //Send Email notification to Submitter

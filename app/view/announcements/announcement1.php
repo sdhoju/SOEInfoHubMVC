@@ -54,14 +54,14 @@
 
 					echo'</p><b>Location:</b>'.$announcement->announcement_Location.'<br><br>';
 							date_default_timezone_set('America/Chicago');
-							$announcement->start_day = date("F d, Y", strtotime("$announcement->start_day"));
-							$announcement->end_day = date("F d, Y", strtotime("$announcement->end_day"));
-							$announcement->start_time = date("g:i a", strtotime($announcement->start_time));							
-							$announcement->end_time = date("g:i a", strtotime($announcement->end_time));
+							$start_day = date("F d, Y", strtotime("$announcement->start_day"));
+							$end_day = date("F d, Y", strtotime("$announcement->end_day"));
+							$start_time = date("g:i a", strtotime($announcement->start_time));							
+							$end_time = date("g:i a", strtotime($announcement->end_time));
 							if($announcement->start_day == $announcement->end_day)
-								echo '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_time.'<br>';
+								echo '<b>Date and time:</b> '.$start_day." ".$start_time." to ".$end_time.'<br>';
 							else							
-								echo '<b>Date and time:</b> '.$announcement->start_day." ".$announcement->start_time." to ".$announcement->end_day." ".$announcement->end_time.' <br>';
+								echo '<b>Date and time:</b> '.$start_day." ".$start_time." to ".$end_day." ".$end_time.' <br>';
 							
 							
 
@@ -117,7 +117,7 @@
 						
 							
 							
-							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events.</a></li>
+							<li><a href ="<?php echo URL;?>" style='font-size:1.5em'>All events</a></li>
 							<li style="font-size:1.30em">
 								<?php
 									$url = 'https:'.URL;

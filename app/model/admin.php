@@ -368,4 +368,29 @@ class Admin extends Model
             }
 
 
+    public function importSubscribers($first_name,$middle_name='',$last_name,$email,$major_ID='10',$hours_earned){
+        $ID= uniqid(rand(), true);
+        $sql= "Insert into subscribers (ID,first_name,middle_name,last_name,email,major_ID,hours_earned,subscribed) 
+                values(:ID,:first_name,:middle_name,:last_name,:email,:major_ID,:hours_earned,1);";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':ID' => $ID,
+                           ':first_name'=> $first_name,
+                           ':middle_name'=> $middle_name,
+                           ':last_name'=> $last_name,
+                           ':email'=> $email,
+                           'major_ID'=>$major_ID,
+                           ':hours_earned'=>$hours_earned
+                        );
+        $query->execute($parameters);
+         // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+
+    }
+    public function resetStudents(){
+        $sql= "Delete from subscribers where major_ID!=10 and hours_earned!=-1;";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+        // useful for debugging: you can see the SQL behind above construction by using:
+        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+    }
 }
