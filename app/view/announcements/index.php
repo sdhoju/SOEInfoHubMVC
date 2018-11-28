@@ -64,7 +64,7 @@
 							echo '<div class="announcement-description"  style="padding-bottom:10px;">';
 								echo'<b>Details:</b></br>';
 								if (isset($row->announcement_Text)) $text =  htmlspecialchars($row->announcement_Text, ENT_QUOTES, 'UTF-8');
-
+								
 								echo (strlen($text) >= 500) ? 
 										substr($text, 0, 500)."<a href =".URL . 'announcement/getAnnouncementByID/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').
 										"'>... Read more</a>":$row->announcement_Text;

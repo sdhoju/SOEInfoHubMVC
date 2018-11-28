@@ -17,7 +17,8 @@ class Admin extends Model
                                 group_Concat(DISTINCT  Contact_Name) as contact_Names, group_Concat(email)as emails ,group_Concat(  phone) as phones,group_Concat(  s_organization) as orgs,
                                 group_Concat(file_name) as attachments
                                 from (announcement natural join submitter)
-                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID order by published;
+                                left join announcementFile on announcement.announcement_ID = announcementFile.announcement_ID group by announcement.announcement_ID 
+                                order by published, start_day;
                                 ";
 
         $query = $this->db->prepare($sql);
@@ -216,7 +217,7 @@ class Admin extends Model
                 $end_time,
                 $external_link,
                 $majors,$classifications,
-                $filenames,$filetypes){ //Start of Edit 
+                $filenames=[],$filetypes=[]){ //Start of Edit 
 
         $parameters = array( 
             // ':announcement_IDF' => $announcement_ID,
@@ -285,15 +286,23 @@ class Admin extends Model
         $sql.="; "; 
 
         //Insert into announceFile
-        $sql.= "INSERT INTO announcementFile(announcement_ID,file_name,file_type)VALUES";
-        for($x = 0; $x < sizeof($filenames); $x++){
-            $sql.="(:announcementFileannounce_ID$x,:filenames$x,:filetypes$x),";
-            $parameters[":announcementFileannounce_ID$x"]=$announcement_ID;
-            $parameters[":filenames$x"]=$filenames[$x];
-            $parameters[":filetypes$x"]=$filetypes[$x];
+        if (!empty($filenames[0])){
+            for($x = 0; $x < sizeof($filenames); $x++){
+                $sql.= "INSERT INTO announcementFile(announcement_ID,file_name,file_type)VALUES";
+                $sql.="(:announcementFileannounce_ID$x,:filenames$x,:filetypes$x)";
+                $sql.=";";  
+    
+                $parameters[":announcementFileannounce_ID$x"]=$announcement_ID;
+                $parameters[":filenames$x"]=$filenames[$x];
+                $parameters[":filetypes$x"]=$filetypes[$x];
+    
+            }
         }
-        $sql= rtrim($sql,',');
-        $sql.=";";  
+       
+            // exit(); 
+           
+        
+        // $sql= rtrim($sql,',');
 
         $sql.="COMMIT;";       
 

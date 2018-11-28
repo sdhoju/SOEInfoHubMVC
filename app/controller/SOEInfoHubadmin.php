@@ -107,12 +107,12 @@ class SOEInfoHubAdmin extends Controller
 
         //Not logged in as admin
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
-            $_SESSION["message"] = "Admin ";
+            $_SESSION["message"] = "Not Valid User ";
             header('location: ' . URL.'SOEInfoHubadmin/index' );
         }else{
             if(isset($_POST["edit_announcement"])) {
-                if(checkfile() || empty($_FILES['attachments']['name'][0] )){
-
+                // if(checkfile() ){
+ 
                     $file_names = $_FILES['attachments']['name'];
                     $file_types  = $_FILES['attachments']['type'];
 
@@ -146,7 +146,7 @@ class SOEInfoHubAdmin extends Controller
                         $time=time();
                         move_uploaded_file($_FILES['attachments']['tmp_name'][$i],ROOT."public/uploads/$img");
                     }
-                }
+                // }
                 header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
 
             }
@@ -160,9 +160,12 @@ class SOEInfoHubAdmin extends Controller
 
     }
   
-    public function deletefile(){
-        echo "From Ajax";
-        // $this->admin->deleteFile($file_ID);
+    public function deletefile($announcement_ID,$file_ID){
+        // echo "From Ajax";
+
+        $this->admin->deleteFile($file_ID);
+        header('location: ' . URL.'SOEInfoHubadmin/editform/'.$announcement_ID );
+
     }
     
     public function publish($announcement_ID){
@@ -201,23 +204,26 @@ class SOEInfoHubAdmin extends Controller
     public function delete()
     {
         if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
-            $_SESSION["message"] = "Admin ";
+            $_SESSION["message"] = "Not Valid User ";
             header('location: ' . URL.'SOEInfoHubadmin/index' );
         }else{
-            if(isset($_POST["delete_announcement"])){
-                $result= $this->admin->deleteAnnouncement($_POST['announcement_ID']);
-                if($result!=0){
-                    $_SESSION["message"] = "Announcement successfully deleted! ";
-                    header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
+            if (!isset($_SESSION["username"]) || !isset($_SESSION["admin"])) {
+                $_SESSION["message"] = "Admin ";
+                header('location: ' . URL.'SOEInfoHubadmin/index' );
+            }else{
+                if(isset($_POST["delete_announcement"])){
+                    $result= $this->admin->deleteAnnouncement($_POST['announcement_ID']);
+                    if($result!=0){
+                        $_SESSION["message"] = "Announcement successfully deleted! ";
+                        header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
+                    }
+                    else{
+                        $_SESSION["message"] = "Announcement couldn't be deleted! ";
+                        header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
+                    }
                 }
-                else{
-                    $_SESSION["message"] = "Announcement couldn't be deleted! ";
-                    header('location: ' . URL.'SOEInfoHubadmin/dashboard' );
-                }
-            }
-           
         }
-   
+        }
     }
 
 

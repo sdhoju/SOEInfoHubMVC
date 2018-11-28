@@ -1,10 +1,6 @@
 <div  id="secmid">
 		<div  id="innercontent">
-		
-
 		<div class="searchbar">
-			<!-- The School of Engineering Information Hub dashboard.  -->
-
 			<?php
 				if (($output = message()) !== null) {
 					echo $output;
@@ -42,6 +38,8 @@
 
 				foreach ($announcements as $row)  {
 					echo '<tr ">';
+					date_default_timezone_set('America/Chicago');
+
 					$row->start_day = date("F d", strtotime("$row->start_day"));
 					$row->start_time = date("g:i a", strtotime($row->start_time));							
 
@@ -69,24 +67,33 @@
 							$class='published-button';
 							$value = 'Unpublish';
 						} 
-						echo "<td style='text-align:center;'><a href = ".URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').">EDIT</a></td>";
-
-						echo '<td style="text-align:center;"><form action='.URL . 'SOEInfoHubadmin/publish/'.htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').' method="post">';
-							echo'<input type="submit" id="javascript-ajax-button" value='.$value.' class='.$class.'>';
-							echo'<input type="hidden" name="publish_announcement" value="" >';
-						echo'</form></td>';
+					?>
+						<td style='text-align:center;'><a href = <?php echo URL . 'SOEInfoHubadmin/editform/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8'); ?>">EDIT</a></td>
 						
-						echo '<td style="text-align:center;"><form action='.URL .'SOEInfoHubadmin/delete/ method="post">';
-							echo'<input type="submit" value="Delete" name="delete_announcement">';
-							echo'<input type="hidden" name="announcement_ID" value='. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8').' />';
-						echo'</form></td>';
-						// echo "<td style='text-align:center;'><a href =".URL .'SOEInfoHubadmin/delete/'. htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8')." onclick='return confirm_delete();'><i class='fa fa-trash'></i> </a></td>";
+						<td style="text-align:center;">
+							<!-- Publish button -->
+							<form 
+								onsubmit="return confirm('Are you sure you sure you want to change publish status?');"
+							 action=<?php echo URL.'SOEInfoHubadmin/publish/'.htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8');?> method="post">
+								<input type="submit" value=<?php echo $value; ?> class=<?php echo $class; ?>>
+								<input type="hidden" name="publish_announcement" value="" >
+							</form>
+						</td>
 
-					echo "</tr>";
-				}
-			echo "</table>";
+						<td style="text-align:center;">
+							<!-- DELETE BUTTON -->
+							<form onsubmit="return confirm('Are you sure you want to delete this?');" action=<?php echo URL;?>SOEInfoHubadmin/delete method="post">
+								<input type="submit" value="Delete" name="delete_announcement">
+								<input type="hidden" name="announcement_ID" value='<?php echo htmlspecialchars($row->announcement_ID, ENT_QUOTES, 'UTF-8');?>' />
+							</form>
+						</td>
+
+					</tr>
+					<?php }?>
+				
+			</table>
 			
-			?>
+			
 			
 			</div>
 		</div>

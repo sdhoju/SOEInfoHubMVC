@@ -215,7 +215,7 @@ class Model
     public function getMajorsByID($announcement_ID)
     {
         //published =1 AND
-        $sql = "SELECT * FROM announcemajor natural join major WHERE   announcement_ID = :announcement_ID ; ";
+        $sql = "SELECT * FROM announceMajor natural join major WHERE   announcement_ID = :announcement_ID ; ";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
@@ -228,7 +228,7 @@ class Model
     public function getClassificationsByID($announcement_ID)
     {
         //published =1 AND
-        $sql = "SELECT * FROM announcecls natural join classification WHERE   announcement_ID = :announcement_ID ; ";
+        $sql = "SELECT * FROM announceCls natural join classification WHERE   announcement_ID = :announcement_ID ; ";
         $query = $this->db->prepare($sql);
         $parameters = array(':announcement_ID' => $announcement_ID);
         $query->execute($parameters);
