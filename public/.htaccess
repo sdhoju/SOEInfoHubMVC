@@ -16,4 +16,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 # and if the requested filename is not a symbolic link,
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.+)$ https://turing.cs.olemiss.edu/~sdhoju/SOEInfoHub/public/index.php?url=$1 [QSA,L]
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
